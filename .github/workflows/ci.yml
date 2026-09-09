@@ -18,9 +18,10 @@ jobs:
           python-version: ${{ matrix.python-version }}
       - name: Run the py2c suite
         run: python3 tests/test_py2c.py
-      - name: Build the runtime archives
+      - name: Build the runtime archives and an image
         if: matrix.python-version == '3.12'
         run: |
+          python3 -m whale_instructor.tools_fetch_toolchain fetch
           python3 -m whale_instructor.tools_openlibs
           python3 -m whale_instructor.build_tc \
             whale_instructor/progs/py_demo.py 1 /tmp/APP_1.bin
