@@ -5,9 +5,11 @@
 #     old bring-up logs; see its own AGENTS.md) ---
 attic/
 
-# --- additional private reference material, if present (root only) ---
-/reference/
-/vendor/
+# --- private material, if present  ---
+/dist/
+.envrc
+/.direnv/
+*.egg-info/
 
 # --- binaries: built archives, linked images, vendor executables ---
 *.a

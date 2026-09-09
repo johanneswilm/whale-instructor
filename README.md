@@ -369,6 +369,7 @@ demand via workflow_dispatch):
 | sdist + wheel on **PyPI** | `pypi.yml` | `pipx install whale-instructor`; PyPI trusted publishing (no secrets in the repo) |
 | **.deb** (Debian/Ubuntu) | `linux-packages.yml` | arch `all`; system Python; `apt install ./whale-instructor_*.deb` |
 | **Flatpak** | `linux-packages.yml` | single-file `whale-instructor-<ver>.flatpak` bundle (freedesktop 24.08) |
+| **Snap** | `linux-packages.yml` | classic confinement (raw USB HID + a toolchain in `$HOME`, like the deb) |
 | **desktop bundles** | `desktop.yml` | Linux .deb + .AppImage, macOS .dmg (Apple silicon + Intel), Windows .msi + .exe — Tauri shell with a PyInstaller backend, self-contained |
 
 The Python tests run on every push (`ci.yml`) across Python 3.9–3.14,

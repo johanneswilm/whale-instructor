@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=Whale Instructor
+GenericName=Robot programming IDE
+Comment=Program WhalesBot MC101s (E7 Pro / AI S1) controllers
+Exec=whale-ide
+Icon=${SNAP}/meta/gui/icon.png
+Terminal=false
+Categories=Education;Science;Development;IDE;
+Keywords=robot;blocks;python;stem;

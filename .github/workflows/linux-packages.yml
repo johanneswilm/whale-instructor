@@ -63,3 +63,21 @@ jobs:
         run: gh release upload "$GITHUB_REF_NAME" dist/whale-instructor_*.deb --clobber
         env:
           GH_TOKEN: ${{ github.token }}
+
+  snap:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: snapcore/action-build@v1
+        id: build
+        with:
+          snapcraft-args: '--destructive-mode'
+      - uses: actions/upload-artifact@v4
+        with:
+          name: snap-package
+          path: ${{ steps.build.outputs.snap }}
+      - name: Attach to the release
+        if: github.event_name == 'release'
+        run: gh release upload "$GITHUB_REF_NAME" ${{ steps.build.outputs.snap }} --clobber
+        env:
+          GH_TOKEN: ${{ github.token }}

@@ -1,0 +1,51 @@
+name: whale-instructor
+base: core24
+version: "0.1.1"
+summary: Open-source management suite for WhalesBot MC101s robots
+description: |
+  Whale Instructor is an open-source management suite for WhalesBot
+  MC101s robot controllers (sold as E7 Pro / AI S1): a visual Blocks
+  editor that grows into real Python and real C, a Python-to-C
+  transpiler, a build pipeline for any modern arm-none-eabi toolchain,
+  a USB uploader, a live debug panel, live programming over Bluetooth,
+  and a searchable device-API reference.
+
+  Programs you write stay yours: the runtime your program is built
+  against is LGPL, your own code carries no license obligations.
+grade: stable
+confinement: classic
+contact: mail@johanneswilm.org
+issues: https://github.com/johanneswilm/whale-instructor/issues
+source-code: https://github.com/johanneswilm/whale-instructor
+license: GPL-3.0-or-later
+
+apps:
+  whale:
+    command: bin/whale
+  whale-ide:
+    command: bin/whale-ide
+    desktop: meta/gui/whale-instructor.desktop
+  whale-fetch-toolchain:
+    command: bin/whale-fetch-toolchain
+
+parts:
+  whale-instructor:
+    plugin: dump
+    source: .
+    override-build: |
+      set -e
+      craftctl default
+      cd "$SNAPCRAFT_PART_INSTALL"
+      # stage the package the way the deb does
+      install -d -m 755 lib/whale-instructor
+      cp -r whale_instructor lib/whale-instructor/
+      find lib/whale-instructor -name '__pycache__' -type d \
+        -exec rm -rf {} + 2>/dev/null || true
+      # drop everything else the source dump brought along; the repo
+      # checkout can contain private research material that must never
+      # ship inside the snap
+      find . -mindepth 1 -maxdepth 1 ! -name lib -exec rm -rf {} +
+
+  snap-files:
+    plugin: dump
+    source: packaging/snap

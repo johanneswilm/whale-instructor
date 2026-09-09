@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "whale-instructor"
-version = "0.1.0"
+version = "0.1.1"
 description = "Open-source management suite for WhalesBot MC101s robot controllers (E7 Pro / AI S1): blocks IDE, Python-to-C transpiler, toolchain builder and USB uploader"
 readme = "README.md"
 license = {text = "GPL-3.0-or-later"}

@@ -21,6 +21,11 @@
   <developer_name>Johannes Wilm</developer_name>
   <content_rating type="oars-1.1"/>
   <releases>
+    <release version="0.1.1" date="2026-09-09">
+      <description><p>USB uploader now works on Windows and macOS too
+      (hidapi transport beside the proven Linux hidraw path); Snap
+      packaging.</p></description>
+    </release>
     <release version="0.1.0" date="2026-09-09">
       <description><p>First public release.</p></description>
     </release>

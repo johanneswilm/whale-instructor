@@ -1,0 +1,4 @@
+#!/bin/sh
+PYTHONPATH="${SNAP}/lib/whale-instructor${PYTHONPATH:+:${PYTHONPATH}}"
+export PYTHONPATH
+exec python3 -m whale_instructor.serve_ide
