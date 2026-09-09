@@ -5,6 +5,9 @@ on:
   release:
     types: [published]
 
+permissions:
+  contents: write   # upload artifacts to the GitHub release
+
 jobs:
   flatpak:
     runs-on: ubuntu-24.04
@@ -28,15 +31,17 @@ jobs:
             packaging/flatpak/org.whaleinstructor.desktop.json
       - name: Bundle a single-file .flatpak
         run: |
+          V=$(python3 -c "import re; print(re.search(r'^version = \"(.*?)\"', open('pyproject.toml').read(), re.M).group(1))")
           flatpak build-bundle repo \
-            whale-instructor-0.1.0.flatpak org.whaleinstructor.desktop stable
+            whale-instructor-$V.flatpak org.whaleinstructor.desktop stable
+          echo "FLATPAK_BUNDLE=whale-instructor-$V.flatpak" >> "$GITHUB_ENV"
       - uses: actions/upload-artifact@v4
         with:
           name: flatpak-bundle
-          path: whale-instructor-0.1.0.flatpak
+          path: ${{ env.FLATPAK_BUNDLE }}
       - name: Attach to the release
         if: github.event_name == 'release'
-        run: gh release upload "$GITHUB_REF_NAME" whale-instructor-0.1.0.flatpak --clobber
+        run: gh release upload "$GITHUB_REF_NAME" "$FLATPAK_BUNDLE" --clobber
         env:
           GH_TOKEN: ${{ github.token }}
 
