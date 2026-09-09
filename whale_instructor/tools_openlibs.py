@@ -68,7 +68,9 @@ def main(argv=None):
     if gcc is None:
         sys.exit('no arm-none-eabi-gcc found: pass --gcc=<path> or put one '
                  'on PATH')
-    ar = gcc.replace('-gcc', '-ar')
+    ar = os.path.join(os.path.dirname(gcc), 'arm-none-eabi-ar')
+    if not os.path.isfile(ar):
+        ar = gcc.replace('-gcc', '-ar')
     major = build_tc.gcc_major(gcc)
     print(f'building {OUT} with {gcc} (gcc {major})')
 
