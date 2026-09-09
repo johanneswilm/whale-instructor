@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "whale-instructor"
+version = "0.1.0"
+description = "Open-source management suite for WhalesBot MC101s robot controllers (E7 Pro / AI S1): blocks IDE, Python-to-C transpiler, toolchain builder and USB uploader"
+readme = "README.md"
+license = {text = "GPL-3.0-or-later"}
+requires-python = ">=3.9"
+dependencies = []
+
+[project.scripts]
+whale = "whale_instructor.whale_cli:main"
+whale-ide = "whale_instructor.serve_ide:main"
+whale-fetch-toolchain = "whale_instructor.tools_fetch_toolchain:main"
+
+[tool.setuptools]
+packages = ["whale_instructor"]
+include-package-data = true
+
+[tool.setuptools.package-data]
+whale_instructor = ["static/**", "runtime/**", "progs/**"]
+
+[tool.setuptools.exclude-package-data]
+whale_instructor = ["runtime/**/*.a", "runtime/**/*.bin", "runtime/**/*.exe", "runtime/**/*.dll"]

@@ -1,0 +1,257 @@
+Metadata-Version: 2.4
+Name: whale-instructor
+Version: 1.0.0
+Summary: Open-source management suite for WhalesBot MC101s robot controllers (E7 Pro / AI S1): blocks IDE, Python-to-C transpiler, toolchain builder and USB uploader
+License: GPL-3.0-or-later
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+License-File: LICENSE
+License-File: LICENSE_EXCEPTION.md
+Dynamic: license-file
+
+# Whale Instructor
+
+**Whale Instructor — an open-source management suite for WhalesBot hardware.**
+
+Whale Instructor is an independent open-source project and is not
+affiliated with, sponsored by, or endorsed by WhalesBot.
+
+It is a Linux-first programming suite for the WhalesBot MC101s controller
+(sold as WhalesBot E7 Pro / AI S1): a visual Blocks editor that grows with
+you into real Python and real C, a Python-to-C transpiler, a build
+pipeline for any modern arm-none-eabi toolchain, a USB uploader, a live
+debug panel, and a searchable reference of the device API.
+
+All project-authored code is GPL-3.0-or-later; the small runtime your
+program is built against is LGPL-3.0-or-later. **Programs you write with
+Whale Instructor stay yours** — see `LICENSE_EXCEPTION.md`.
+
+## How it fits together
+
+```
+Blocks  ──►  Python (whale dialect)  ──►  py2c.py  ──►  user_main.c ─┐
+                                                                     ├─► build_tc.py ──► APP_N.bin ──► whale_cli.py upload
+C (advanced, editable) ──────────────────────────────────────────────┘
+```
+
+- **Blocks** (beginners): drag-and-drop blocks for motors, sensors, sounds,
+  displays, line following and more — the full block set of the vendor's
+  desktop app. They generate exactly the Python dialect below.
+- **Settings**: the default hardware profile is the WhalesBot E7 Pro /
+  AI S1 kit (3 motors, 2 touch sensors, 1 infrared, 1 five-in-1 grayscale,
+  2 emotion LED screens), so the toolbox only shows what kids actually
+  have. Additional kit/add-on hardware can be enabled there at any time.
+  Port dropdowns on the blocks always offer every port — kids simply pick
+  the port they plugged the part into (it is like Lego: re-plug freely,
+  no settings needed). By default the IDE runs in simple mode: one
+  **Build + Upload** button and no compiler choice. *Show advanced
+  controls* in the settings enables the compiler selector (only shown
+  when more than one `arm-none-eabi-gcc` is installed) and a plain Build
+  button; the preferred compiler is remembered.
+- **Python**: plain, readable Python (`from whale import ...`). Build
+  compiles it through the transpiler, with line-numbered errors.
+- **C**: an editable C editor. *Take C from Python* translates your current
+  Blocks/Python program into C right in the tab (transpiled fresh, never a
+  stale artifact), you can edit it and build it directly; building from
+  Blocks/Python warns before overwriting your hand-edited C.
+- **Debug**: drive any motor at -100..100 and read the sensors the
+  controller reports live over USB (infrared, touch), without writing a
+  program.
+- **Help**: the complete device API with signatures and descriptions —
+  click a function to insert its call.
+
+The IDE speaks 19 languages: English, Deutsch, Español, norsk bokmål,
+svenska, dansk, suomi, français, italiano, português, Nederlands, polski,
+русский, 中文（简体）, 日本語, 한국어, Türkçe, العربية and עברית (switch in
+the title bar; Arabic and Hebrew mirror the whole UI right-to-left,
+including the block workspace).
+
+## Linux first (macOS / Windows planned)
+
+This project is developed on Linux and works on Linux today. macOS and
+Windows support is planned but not implemented yet (the HID uploader
+currently uses `/dev/hidraw`; the toolchain finder searches PATH and can be
+pointed at any `arm-none-eabi-gcc` via `WHALE_INSTRUCTOR_TOOLCHAIN` or
+`--gcc=`). Everything is stdlib-only Python with argv-list subprocesses, so
+nothing is Linux-specific by design.
+
+## What you need (not included)
+
+The vendor's proprietary runtime is **not** included and is not
+distributed here: `whalesbot.h`, `whalesbot.c`, `libMercuryController.a`,
+the STM32 linker scripts and related vendor sources. To build controller
+images you must obtain these from your own copy of the vendor software.
+The easy way is the fetch tool, which downloads the vendor's own Block
+Studio package and extracts exactly the needed files (needs `7z` from
+p7zip):
+
+```
+whale-fetch-vendor install-runtime        # pipx/PyPI install
+# or, from a source checkout:
+python3 tools_fetch_vendor.py install-runtime
+```
+
+It places them under `~/.local/share/whale-instructor/runtime_private/`
+(or `$XDG_DATA_HOME/whale-instructor/runtime_private`); alternatively
+point `WHALE_INSTRUCTOR_RUNTIME` at an existing `runtime_private/`
+directory. The expected layout is:
+
+```
+runtime_private/
+  example/               whalesbot.h, whalesbot.c, main.c, GoLine.c,
+                         libMercuryController.a,
+                         build/gcc/linkerScript/stm32_flash{a,b,c}.ld
+  source/USER/syscalls.c
+  source/BSP/ ...        vendor SDK sources (FreeRTOS, STM32 stdperiph, ...)
+```
+
+`build_tc.py` expects exactly this layout. Without a vendor runtime the
+transpiler, tests and IDE still run — only compiling/uploading needs it.
+
+### Shrinking the vendor blob (recommended)
+
+Most of what used to be inside `libMercuryController.a` is actually free
+software: FreeRTOS V9.0.0 (GPL-2.0 + FreeRTOS exception), ST's StdPeriph
+drivers and USB core (permissive ST license) and ARM's CMSIS. This
+package ships those sources in `runtime/open/` and links them itself:
+
+```
+python3 -m whale_instructor.tools_openlibs    # build runtime/open/libwhale_open.a
+python3 -m whale_instructor.tools_split_blob  # strip free members from the vendor .a
+```
+
+Afterwards `runtime_private/example/mercury_core.a` holds only WhalesBot's
+proprietary core (14 of the original 40 archive members) and
+`build_tc.py` links the open libraries + core automatically. Device-test
+status is tracked in `TODO.md`.
+
+## Install (PyPI)
+
+```
+pipx install whale-instructor      # provides whale, whale-ide, whale-fetch-vendor
+whale-fetch-vendor install-runtime # fetch + install the proprietary vendor runtime
+whale-ide                          # open the IDE at http://127.0.0.1:8766/
+```
+
+You also need an `arm-none-eabi-gcc` toolchain (e.g. an xPack release
+unpacked under `~/.local/`); the build auto-discovers it, or pass
+`--gcc=` / set `WHALE_INSTRUCTOR_TOOLCHAIN`. `install-runtime` needs the
+`7z` binary (p7zip) to crack open the vendor installer.
+
+## Quick start (command line, from a source checkout)
+
+```
+# 1. transpile Python (the whale dialect) to C
+python3 py2c.py whale_instructor/progs/py_demo.py -o /tmp/user_main.c
+
+# 2. build a controller image (auto-finds a toolchain; newest ~/.local
+#    xPack first, then PATH, or pass --gcc=/path/to/arm-none-eabi-gcc)
+python3 build_tc.py /tmp/user_main.c 1 /tmp/APP_1.bin
+
+# 3. upload to program slot P1 (stop the vendor app first — it fights
+#    over the USB device)
+python3 whale_cli.py probe                 # must answer MC1102
+python3 whale_cli.py upload /tmp/APP_1.bin 1
+```
+
+The root-level `py2c.py` / `build_tc.py` / `whale_cli.py` /
+`tools_*.py` / `ide/serve_ide.py` are thin shims over the
+`whale_instructor/` package, so these commands work unchanged; the same
+tools are also available as `python3 -m whale_instructor.<module>` and,
+after a PyPI install, as the `whale*` commands above.
+
+## Quick start (IDE)
+
+```
+whale-ide                           # or: python3 ide/serve_ide.py
+                                    # http://127.0.0.1:8766/
+```
+
+One pipeline: Blocks/Python → py2c → build_tc.py → upload, with build and
+upload logs streamed live (the log stays hidden until you open it from the
+bar at the bottom). Programs are saved as `.py` or `.c` files in
+`programs/` (created in the directory you start the IDE from).
+
+## The Python dialect
+
+```python
+from whale import A, set_motor, sleep
+
+def main():
+    set_motor(A, 50)
+    sleep(3000)
+    set_motor(A, 0)
+```
+
+- entry points: `def main()` (runs once at boot) and `def task()`,
+  `def task1()` … `task15()` (loop tasks; the build adds `-DUSER_TASKN`)
+- explicit imports only (no star imports), numeric values only
+  (no strings/lists/`print` — use `display_digital_tube(P1, n)`)
+- `if`/`elif`/`else`, `while`, `for i in range(a, b[, literal step])`,
+  `break`/`continue`/`return`/`pass`, `//`, `%`, float `/`,
+  helper functions, `and`/`or`/`not`
+- ~80 device API functions and constants — motors, omni wheels, servos,
+  sounds, LED matrices, grayscale, patrol/line following, sensors, timers,
+  EEPROM. The whole list with descriptions lives in the IDE's Help tab;
+  the machine-readable source of truth is `py2c.py` (`API_HELP`).
+- `display_custom(port, r0..r7)` draws an 8x8 LED matrix pattern from
+  eight row bitmasks.
+- Old programs written for the pre-rename `from whalesbot import ...`
+  dialect still transpile.
+
+Errors are reported with line numbers, both at transpile time and in the
+IDE log.
+
+## Repository layout
+
+| Path | Purpose |
+|---|---|
+| `whale_instructor/` | the installable Python package (PyPI: `whale-instructor`) |
+| `whale_instructor/py2c.py` | Python -> C transpiler, device API tables + reference |
+| `whale_instructor/build_tc.py` | build images with any modern arm-none-eabi toolchain |
+| `whale_instructor/whale_cli.py` | USB HID uploader / probe / live motor & sensor CLI |
+| `whale_instructor/serve_ide.py` + `whale_instructor/static/` | local web IDE (stdlib server + Blocks/Python/C UI) |
+| `whale_instructor/runtime/` | LGPL runtime pieces (`whale_instructor.h`, `assert_override.c`) |
+| `whale_instructor/runtime/open/` | free upstream sources replacing vendor-blob members |
+| `whale_instructor/tools_openlibs.py` | build `libwhale_open.a` from the open sources |
+| `whale_instructor/tools_split_blob.py` | strip free members from the vendor `.a` |
+| `whale_instructor/tools_fetch_vendor.py` | fetch vendor packages; `install-runtime` sets up the runtime |
+| `whale_instructor/progs/` | sample programs (Python dialect and C) |
+| `py2c.py`, `build_tc.py`, ... | root shims so the documented commands keep working |
+| `programs/` | IDE-saved programs (yours) |
+| `tests/` | py2c suite (`tests/test_py2c.py`) + IDE generator checks |
+| `make_publish.py` | builds the publishable `publish/` tree |
+| `TODO.md` | open work (including the open-core replacement plan) |
+
+## Tests
+
+```
+python3 tests/test_py2c.py          # transpiler: 54 checks
+node tests/ide_generators.test.js   # IDE blocks -> Python: 258 checks
+```
+
+The py2c suite also compiles every sample program with
+`arm-none-eabi-gcc -fsyntax-only` against the runtime headers (skipped if
+no cross-gcc is found; set `WHALE_INSTRUCTOR_TOOLCHAIN=/path` to point at
+one). No controller needed.
+
+## Operational notes
+
+- Stop the vendor application (and any Wine bridge) before uploading with
+  `whale_cli.py` — its periodic USB traffic corrupts in-flight uploads.
+- Uploads go to slots P1..P3; the finalize packet starts the program, so
+  disconnect USB and watch the robot.
+- An image must be built for its target slot (build_tc.py takes the slot
+  as an argument) — never reuse a slot-1 image in P2/P3.
+- `runtime_private/` is yours: it never leaves your machine.
+
+## License and trademark
+
+- Project code: GPL-3.0-or-later (`LICENSE`); runtime pieces linked into
+  your program: LGPL-3.0-or-later; your own programs: any terms you like
+  (`LICENSE_EXCEPTION.md`). Third-party notices: `THIRD_PARTY_NOTICES.md`.
+- **Whale Instructor is an independent open-source project and is not
+  affiliated with, sponsored by, or endorsed by WhalesBot.** The name
+  "WhalesBot" and the hardware it describes are trademarks of their
+  respective owner; they are mentioned here solely to identify the
+  supported hardware.

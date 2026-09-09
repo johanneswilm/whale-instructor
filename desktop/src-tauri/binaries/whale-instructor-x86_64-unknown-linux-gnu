@@ -1,0 +1,31 @@
+#!/bin/sh
+# SPDX-FileCopyrightText: Johannes Wilm
+# SPDX-License-Identifier: GPL-3.0-or-later
+#
+# Placeholder sidecar for the Whale Instructor desktop shell (Linux).
+# tauri-build requires bundle.externalBin files to exist at build time, so
+# this script stands in until the real PyInstaller bundle is placed here:
+#
+#   cp artifacts/bundle/whale-instructor \
+#      desktop/src-tauri/binaries/whale-instructor-x86_64-unknown-linux-gnu
+#
+# (see desktop/README.md). The desktop shell's Rust code resolves the backend
+# in the same order as this script: explicit binary, bundled sidecar, PATH
+# installs, python3 module fallback.
+
+set -e
+
+# real bundle built by tools_build_bundle.py, if present next to the repo
+HERE=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+REPO_BUNDLE="$HERE/../../../artifacts/bundle/whale-instructor"
+if [ -x "$REPO_BUNDLE" ]; then
+    exec "$REPO_BUNDLE" "$@"
+fi
+
+for name in whale-instructor whale-ide; do
+    if command -v "$name" >/dev/null 2>&1; then
+        exec "$name" "$@"
+    fi
+done
+
+exec python3 -m whale_instructor.serve_ide "$@"

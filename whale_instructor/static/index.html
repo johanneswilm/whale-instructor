@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Whale Instructor</title>
+<link rel="icon" href="static/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="static/favicon.png" sizes="32x32">
+<link rel="apple-touch-icon" href="static/favicon.png">
+<link rel="stylesheet" href="static/vendor/codemirror.min.css">
+<link rel="stylesheet" href="static/vendor/material-darker.min.css">
+<link rel="stylesheet" href="static/style.css">
+</head>
+<body>
+<header>
+  <span id="logo"><img src="static/favicon.svg" alt="" width="22"
+        height="22"> Whale Instructor</span>
+  <select id="langSel" title="Language"></select>
+  <span class="spacer"></span>
+  <span id="connDot" class="dot off"></span>
+  <span id="connSpinner" class="connspinner" hidden></span>
+  <span id="connLabel" data-i18n="notConnected">not connected</span>
+  <button id="btnProbe" class="primary" data-i18n="checkController">Connect via USB</button>
+  <button id="btnRunLive" class="primary" data-i18n="runLive">Connect via Bluetooth</button>
+  <button id="btnSettings" data-i18n="settings">Settings</button>
+  <button id="btnQuit" data-i18n="quit" hidden>Quit</button>
+  <button id="btnStop" class="danger" data-i18n="stopMotors">STOP MOTORS</button>
+</header>
+
+<div id="staticBanner" class="banner" data-i18n="staticModeNote" hidden></div>
+<div id="goneBanner" class="banner" hidden>
+  <span data-i18n="serverGone"></span>
+  <button id="btnOffline" data-i18n="continueOffline">Continue offline</button>
+  <button id="btnGoneClose" data-i18n="close">close</button>
+</div>
+
+<div id="toolbar">
+  <input id="progName" placeholder="program name" maxlength="40" spellcheck="false">
+  <button id="btnSave" data-i18n="save">Save</button>
+  <button id="btnSaveAs" data-i18n="saveAs">Save as…</button>
+  <button id="btnOpen" data-i18n="openFile">Open file…</button>
+  <input id="fileOpen" type="file" accept=".py,.c,.txt" hidden>
+  <button id="btnNew" data-i18n="new">New</button>
+  <button id="btnDelete" data-i18n="delete">Delete</button>
+  <span class="sep"></span>
+  <label id="slotLbl" for="slotSel" data-i18n="slot">Slot</label>
+  <select id="slotSel">
+    <option value="1">P1</option>
+    <option value="2">P2</option>
+    <option value="3">P3</option>
+  </select>
+  <select id="tcSel"></select>
+  <button id="btnRun" class="primary" data-i18n="runProgram" disabled>Run</button>
+  <button id="btnBuild" class="primary" data-i18n="build">Build</button>
+  <button id="btnUpload" class="primary" data-i18n="buildUpload">Build + Upload</button>
+  <button id="btnExport" data-i18n="export" hidden>Export</button>
+</div>
+
+<nav id="tabs">
+  <button class="tab active" data-tab="blocks" data-i18n="tabBlocks">Blocks</button>
+  <button class="tab" data-tab="python" data-i18n="tabPython">Python</button>
+  <button class="tab" data-tab="c" data-i18n="tabC">C</button>
+  <button class="tab" data-tab="debug" data-i18n="tabDebug">Debug</button>
+  <button class="tab" data-tab="help" data-i18n="tabHelp">Help</button>
+</nav>
+
+<main>
+  <div id="tab-blocks" class="tabpane active">
+    <div id="blocklyDiv"></div>
+  </div>
+  <div id="tab-python" class="tabpane">
+    <textarea id="pyText"></textarea>
+    <div class="hintbar">
+      <button id="btnFromBlocks" data-i18n="fromBlocks">Take code from Blocks</button>
+      <span data-i18n="pythonHint">Build compiles this Python (from whale import &hellip;) and uploads it.
+            No print, no strings &mdash; use display_digital_tube instead.</span>
+    </div>
+  </div>
+  <div id="tab-c" class="tabpane">
+    <textarea id="cText"></textarea>
+    <div class="hintbar">
+      <button id="btnFromPython" data-i18n="fromPython">Take C from Python</button>
+      <span data-i18n="cHint">Edit C here and build it directly, or press Take C
+            from Python to translate your current Blocks/Python program into
+            editable C.</span>
+    </div>
+  </div>
+
+  <div id="tab-debug" class="tabpane">
+    <div class="debugwrap">
+      <div class="debugcol">
+        <h3 data-i18n="dbgMotors">Motors</h3>
+        <div id="motorRows"></div>
+        <button id="btnMotorsStop" class="danger" data-i18n="dbgStopAll">STOP ALL MOTORS</button>
+        <p class="dbgnote" data-i18n="dbgMotorNote">Range -100..100, 0 = stop. The motor keeps
+           running until you stop it or upload a program.</p>
+      </div>
+      <div class="debugcol">
+        <h3 data-i18n="dbgSensors">Sensors</h3>
+        <div id="sensorRows"></div>
+        <p class="dbgnote" data-i18n="dbgSensorNote">The controller only reports infrared and
+           touch live over USB. Other sensors can be read inside a running
+           program (see the Help tab).</p>
+      </div>
+    </div>
+  </div>
+
+  <div id="tab-help" class="tabpane">
+    <div class="helpbar">
+      <input id="helpSearch" data-i18n-ph="helpSearch" placeholder="search the device API&hellip;">
+      <span class="helpmeta" id="helpCount"></span>
+    </div>
+    <div id="helpList" class="helplist"></div>
+    <div class="hintbar">
+      <span data-i18n="helpHint">Click a function to insert its call into the Python tab.
+            Everything you can import from <b>whale</b> is listed here.</span>
+    </div>
+  </div>
+</main>
+
+<div id="settingsOverlay" class="overlay" hidden></div>
+
+<div id="bottombar">
+  <button id="btnLogTab" class="btab" data-i18n="log">Log</button>
+  <span id="logUnread" class="unread" hidden></span>
+  <span class="spacer"></span>
+  <span id="statusLine"></span>
+</div>
+
+<section id="logpane" hidden>
+  <div id="logGrip" title="drag to resize"></div>
+  <div class="loghead">
+    <span data-i18n="log">Log</span>
+    <button id="btnLogClose" data-i18n="close">close</button>
+    <button id="btnClearLog" data-i18n="clear">clear</button>
+  </div>
+  <pre id="log"></pre>
+</section>
+
+<script src="static/vendor/blockly_compressed.js"></script>
+<script src="static/vendor/blocks_compressed.js"></script>
+<script src="static/vendor/msg_en.js"></script>
+<script src="static/vendor/codemirror.min.js"></script>
+<script src="static/vendor/python.min.js"></script>
+<script src="static/vendor/clike.min.js"></script>
+<script src="static/i18n.js"></script>
+<script src="static/js/whale_ble.js"></script>
+<script src="static/js/whalepy.js"></script>
+<script src="static/app.js"></script>
+</body>
+</html>

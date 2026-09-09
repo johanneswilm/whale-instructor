@@ -1,0 +1,19 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "backend-remote",
+  "description": "Permissions for the main window once it has navigated to the backend-served frontend at http://127.0.0.1 (the shell navigates there on startup)",
+  "windows": ["main"],
+  "remote": {
+    "urls": [
+      "http://127.0.0.1:*",
+      "http://localhost:*"
+    ]
+  },
+  "permissions": [
+    "core:default",
+    "core:event:default",
+    "core:window:default",
+    "blec:default",
+    "dialog:allow-save"
+  ]
+}

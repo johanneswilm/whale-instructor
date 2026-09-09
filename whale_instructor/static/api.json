@@ -1,0 +1,1786 @@
+{
+ "consts": [
+  "MotorAll",
+  "A",
+  "B",
+  "C",
+  "D",
+  "P1",
+  "P2",
+  "P3",
+  "P4",
+  "P5",
+  "move_forward",
+  "move_backward",
+  "move_turnleft",
+  "move_turnright",
+  "black_line",
+  "white_line",
+  "switch_off",
+  "switch_on",
+  "key_enter",
+  "key_left",
+  "key_right",
+  "turn_left",
+  "turn_center",
+  "turn_right",
+  "intersection_left",
+  "intersection_T",
+  "intersection_right",
+  "compare_less_than",
+  "compare_greater_than",
+  "compare_equal",
+  "compare_not_equal",
+  "omni_turnleft",
+  "omni_turnright",
+  "color_white",
+  "color_yellow",
+  "color_purple",
+  "color_cyan",
+  "color_red",
+  "color_green",
+  "color_blue",
+  "color_black",
+  "S1",
+  "S2",
+  "S3",
+  "S4",
+  "S5",
+  "S6",
+  "S7",
+  "S8",
+  "S9",
+  "S10",
+  "S11",
+  "S12",
+  "S13",
+  "S14",
+  "S15",
+  "S16",
+  "S17",
+  "S18",
+  "AI_image_0",
+  "AI_image_1",
+  "AI_image_2",
+  "AI_image_3",
+  "AI_image_4",
+  "AI_image_5",
+  "AI_image_6",
+  "AI_image_7",
+  "AI_image_8",
+  "AI_image_9",
+  "sound_airplane",
+  "sound_automobile",
+  "sound_bird",
+  "sound_brake",
+  "sound_bye",
+  "sound_bye_en",
+  "sound_cannon",
+  "sound_cat",
+  "sound_cattle",
+  "sound_cock",
+  "sound_concerned",
+  "sound_concerned_en",
+  "sound_dinosaur",
+  "sound_dog",
+  "sound_duck",
+  "sound_heartbeat",
+  "sound_helicopter",
+  "sound_hi",
+  "sound_hi_en",
+  "sound_horn",
+  "sound_horse",
+  "sound_laugh",
+  "sound_piano_do",
+  "sound_piano_DO",
+  "sound_piano_fa",
+  "sound_piano_la",
+  "sound_piano_mi",
+  "sound_piano_re",
+  "sound_piano_si",
+  "sound_piano_so",
+  "sound_press_key",
+  "sound_sheep",
+  "sound_tank",
+  "sound_thanks",
+  "sound_thanks_en",
+  "sound_welcome",
+  "sound_welcome_en",
+  "sound_whistling",
+  "sound_wow",
+  "LED_symbol_0",
+  "LED_symbol_1",
+  "LED_symbol_2",
+  "LED_symbol_3",
+  "LED_symbol_4",
+  "LED_symbol_5",
+  "LED_symbol_6",
+  "LED_symbol_7",
+  "LED_symbol_8",
+  "LED_symbol_9",
+  "LED_symbol_A",
+  "LED_symbol_B",
+  "LED_symbol_C",
+  "LED_symbol_D",
+  "LED_symbol_E",
+  "LED_symbol_F",
+  "LED_symbol_G",
+  "LED_symbol_H",
+  "LED_symbol_I",
+  "LED_symbol_J",
+  "LED_symbol_K",
+  "LED_symbol_L",
+  "LED_symbol_M",
+  "LED_symbol_N",
+  "LED_symbol_O",
+  "LED_symbol_P",
+  "LED_symbol_Q",
+  "LED_symbol_R",
+  "LED_symbol_S",
+  "LED_symbol_T",
+  "LED_symbol_U",
+  "LED_symbol_V",
+  "LED_symbol_W",
+  "LED_symbol_X",
+  "LED_symbol_Y",
+  "LED_symbol_Z",
+  "LED_symbol_forward",
+  "LED_symbol_backward",
+  "LED_symbol_left",
+  "LED_symbol_turnleft",
+  "LED_symbol_turnright",
+  "LED_symbol_stop",
+  "LED_symbol_GO",
+  "LED_symbol_big_heart",
+  "LED_symbol_little_heart",
+  "LED_symbol_plus",
+  "LED_symbol_minus",
+  "LED_symbol_multiplied",
+  "LED_symbol_divided",
+  "LED_symbol_equal",
+  "LED_symbol_exclamation",
+  "LED_symbol_question_mark",
+  "LED_symbol_dollar",
+  "LED_symbol_RMB",
+  "LED_emoji_eye",
+  "LED_emoji_smile",
+  "LED_emoji_sad",
+  "LED_emoji_naughty",
+  "LED_emoji_surprised",
+  "LED_emoji_flare",
+  "LED_emoji_tears",
+  "LED_emoji_avarice",
+  "LED_emoji_beckoning",
+  "LED_emoji_anger",
+  "LED_emoji_dizzy",
+  "LED_emoji_grim"
+ ],
+ "funcs": {
+  "button_pressed": {
+   "kinds": [
+    "i"
+   ],
+   "kw": [
+    "key"
+   ],
+   "ret": "i"
+  },
+  "clear_screen": {
+   "kinds": [],
+   "kw": [],
+   "ret": "i"
+  },
+  "color_detected": {
+   "kinds": [
+    "i",
+    "i"
+   ],
+   "kw": [
+    "port",
+    "color"
+   ],
+   "ret": "i"
+  },
+  "color_value": {
+   "kinds": [
+    "i"
+   ],
+   "kw": [
+    "port"
+   ],
+   "ret": "i"
+  },
+  "display_custom": {
+   "kinds": [
+    "i",
+    "i",
+    "i",
+    "i",
+    "i",
+    "i",
+    "i",
+    "i",
+    "i"
+   ],
+   "kw": [
+    "port",
+    "r0",
+    "r1",
+    "r2",
+    "r3",
+    "r4",
+    "r5",
+    "r6",
+    "r7"
+   ],
+   "ret": "i"
+  },
+  "display_digital_tube": {
+   "kinds": [
+    "i",
+    "i"
+   ],
+   "kw": [
+    "port",
+    "number"
+   ],
+   "ret": "i"
+  },
+  "display_digital_tube_score": {
+   "kinds": [
+    "i",
+    "i",
+    "i"
+   ],
+   "kw": [
+    "p",
+    "left",
+    "right"
+   ],
+   "ret": "i"
+  },
+  "display_emotion": {
+   "kinds": [
+    "i",
+    "i",
+    "i"
+   ],
+   "kw": [
+    "left_port",
+    "right_port",
+    "emoji"
+   ],
+   "ret": "i"
+  },
+  "display_screen": {
+   "kinds": [
+    "i"
+   ],
+   "kw": [
+    "number"
+   ],
+   "ret": "i"
+  },
+  "display_symbol": {
+   "kinds": [
+    "i",
+    "i"
+   ],
+   "kw": [
+    "port",
+    "symbol"
+   ],
+   "ret": "i"
+  },
+  "get_AI_image": {
+   "kinds": [
+    "i"
+   ],
+   "kw": [
+    "port"
+   ],
+   "ret": "i"
+  },
+  "get_AI_voice": {
+   "kinds": [],
+   "kw": [],
+   "ret": "i"
+  },
+  "get_ambient_light": {
+   "kinds": [
+    "i"
+   ],
+   "kw": [
+    "port"
+   ],
+   "ret": "i"
+  },
+  "get_analog_input": {
+   "kinds": [
+    "i"
+   ],
+   "kw": [
+    "port"
+   ],
+   "ret": "i"
+  },
+  "get_bt_remote_control": {
+   "kinds": [],
+   "kw": [],
+   "ret": "i"
+  },
+  "get_digital_input": {
+   "kinds": [
+    "i"
+   ],
+   "kw": [
+    "port"
+   ],
+   "ret": "i"
+  },
+  "get_encoder_value": {
+   "kinds": [
+    "i"
+   ],
+   "kw": [
+    "motor"
+   ],
+   "ret": "i"
+  },
+  "get_flame": {
+   "kinds": [
+    "i"
+   ],
+   "kw": [
+    "port"
+   ],
+   "ret": "i"
+  },
+  "get_humidity": {
+   "kinds": [
+    "i"
+   ],
+   "kw": [
+    "port"
+   ],
+   "ret": "f"
+  },
+  "get_infrared_distance": {
+   "kinds": [
+    "i"
+   ],
+   "kw": [
+    "port"
+   ],
+   "ret": "i"
+  },
+  "get_integrated_grayscale": {
+   "kinds": [
+    "i"
+   ],
+   "kw": [
+    "channel"
+   ],
+   "ret": "i"
+  },
+  "get_motor_speed": {
+   "kinds": [
+    "i"
+   ],
+   "kw": [
+    "motor"
+   ],
+   "ret": "i"
+  },
+  "get_single_grayscale": {
+   "kinds": [
+    "i"
+   ],
+   "kw": [
+    "port"
+   ],
+   "ret": "i"
+  },
+  "get_sound_volume": {
+   "kinds": [
+    "i"
+   ],
+   "kw": [
+    "port"
+   ],
+   "ret": "i"
+  },
+  "get_temperature": {
+   "kinds": [
+    "i"
+   ],
+   "kw": [
+    "port"
+   ],
+   "ret": "f"
+  },
+  "get_ultrasonic_distance": {
+   "kinds": [
+    "i"
+   ],
+   "kw": [
+    "port"
+   ],
+   "ret": "i"
+  },
+  "integrated_grayscale_detected": {
+   "kinds": [
+    "i",
+    "i"
+   ],
+   "kw": [
+    "ch",
+    "line"
+   ],
+   "ret": "i"
+  },
+  "magnetic_detected": {
+   "kinds": [
+    "i"
+   ],
+   "kw": [
+    "port"
+   ],
+   "ret": "i"
+  },
+  "math_modulus": {
+   "kinds": [
+    "i",
+    "i"
+   ],
+   "kw": [
+    "a",
+    "b"
+   ],
+   "ret": "i"
+  },
+  "move": {
+   "kinds": [
+    "i",
+    "i"
+   ],
+   "kw": [
+    "direction",
+    "speed"
+   ],
+   "ret": "i"
+  },
+  "move_time": {
+   "kinds": [
+    "i",
+    "i",
+    "f"
+   ],
+   "kw": [
+    "direction",
+    "speed",
+    "seconds"
+   ],
+   "ret": "i"
+  },
+  "obstacle_infrared_detected": {
+   "kinds": [
+    "i"
+   ],
+   "kw": [
+    "port"
+   ],
+   "ret": "i"
+  },
+  "off_LED": {
+   "kinds": [
+    "i"
+   ],
+   "kw": [
+    "port"
+   ],
+   "ret": "i"
+  },
+  "off_RGB_color": {
+   "kinds": [
+    "i"
+   ],
+   "kw": [
+    "port"
+   ],
+   "ret": "i"
+  },
+  "off_digital_tube": {
+   "kinds": [
+    "i"
+   ],
+   "kw": [
+    "port"
+   ],
+   "ret": "i"
+  },
+  "off_emotion": {
+   "kinds": [
+    "i",
+    "i"
+   ],
+   "kw": [
+    "left_port",
+    "right_port"
+   ],
+   "ret": "i"
+  },
+  "off_motor": {
+   "kinds": [
+    "i"
+   ],
+   "kw": [
+    "motor"
+   ],
+   "ret": "i"
+  },
+  "omni_wheel_ctrl": {
+   "kinds": [
+    "f",
+    "f"
+   ],
+   "kw": [
+    "power",
+    "degrees"
+   ],
+   "ret": "i"
+  },
+  "omni_wheel_stop": {
+   "kinds": [],
+   "kw": [],
+   "ret": "i"
+  },
+  "omni_wheel_turn": {
+   "kinds": [
+    "i",
+    "i"
+   ],
+   "kw": [
+    "direction",
+    "power"
+   ],
+   "ret": "i"
+  },
+  "patrol_ambient_detection": {
+   "kinds": [],
+   "kw": [],
+   "ret": "i"
+  },
+  "patrol_button": {
+   "kinds": [],
+   "kw": [],
+   "ret": "i"
+  },
+  "patrol_integrated_initialization": {
+   "kinds": [
+    "i",
+    "i",
+    "i",
+    "i"
+   ],
+   "kw": [
+    "lm",
+    "ls",
+    "rm",
+    "rs"
+   ],
+   "ret": "i"
+  },
+  "patrol_omni_wheel_integrated_init": {
+   "kinds": [
+    "i",
+    "i",
+    "i",
+    "i"
+   ],
+   "kw": [
+    "a",
+    "b",
+    "c",
+    "d"
+   ],
+   "ret": "i"
+  },
+  "patrol_omni_wheel_single_init": {
+   "kinds": [
+    "i",
+    "i",
+    "i",
+    "i",
+    "i",
+    "i",
+    "i",
+    "i",
+    "i"
+   ],
+   "kw": [
+    "a",
+    "b",
+    "c",
+    "d",
+    "p1",
+    "p2",
+    "p3",
+    "p4",
+    "p5"
+   ],
+   "ret": "i"
+  },
+  "patrol_road": {
+   "kinds": [
+    "i",
+    "i",
+    "f"
+   ],
+   "kw": [
+    "intersection",
+    "speed",
+    "seconds"
+   ],
+   "ret": "i"
+  },
+  "patrol_single_initialization": {
+   "kinds": [
+    "i",
+    "i",
+    "i",
+    "i",
+    "i",
+    "i",
+    "i",
+    "i",
+    "i"
+   ],
+   "kw": [
+    "lm",
+    "ls",
+    "rm",
+    "rs",
+    "p1",
+    "p2",
+    "p3",
+    "p4",
+    "p5"
+   ],
+   "ret": "i"
+  },
+  "patrol_speed": {
+   "kinds": [
+    "i"
+   ],
+   "kw": [
+    "speed"
+   ],
+   "ret": "i"
+  },
+  "patrol_time": {
+   "kinds": [
+    "i",
+    "f"
+   ],
+   "kw": [
+    "speed",
+    "seconds"
+   ],
+   "ret": "i"
+  },
+  "patrol_turn": {
+   "kinds": [
+    "i",
+    "i",
+    "i"
+   ],
+   "kw": [
+    "turn",
+    "left_speed",
+    "right_speed"
+   ],
+   "ret": "i"
+  },
+  "play_record": {
+   "kinds": [],
+   "kw": [],
+   "ret": "i"
+  },
+  "play_sound": {
+   "kinds": [
+    "i"
+   ],
+   "kw": [
+    "sound"
+   ],
+   "ret": "i"
+  },
+  "random_number": {
+   "kinds": [
+    "i",
+    "i"
+   ],
+   "kw": [
+    "min",
+    "max"
+   ],
+   "ret": "i"
+  },
+  "read_EEPROM": {
+   "kinds": [
+    "i"
+   ],
+   "kw": [
+    "address"
+   ],
+   "ret": "i"
+  },
+  "read_number": {
+   "kinds": [
+    "i"
+   ],
+   "kw": [
+    "number"
+   ],
+   "ret": "i"
+  },
+  "recorder": {
+   "kinds": [
+    "i"
+   ],
+   "kw": [
+    "port"
+   ],
+   "ret": "i"
+  },
+  "reset_motor_encoder": {
+   "kinds": [
+    "i"
+   ],
+   "kw": [
+    "motor"
+   ],
+   "ret": "i"
+  },
+  "reset_timer": {
+   "kinds": [],
+   "kw": [],
+   "ret": "i"
+  },
+  "restore_torque": {
+   "kinds": [],
+   "kw": [],
+   "ret": "i"
+  },
+  "reverse_motor": {
+   "kinds": [
+    "i"
+   ],
+   "kw": [
+    "motor"
+   ],
+   "ret": "i"
+  },
+  "set_RGB": {
+   "kinds": [
+    "i",
+    "i",
+    "i",
+    "i"
+   ],
+   "kw": [
+    "port",
+    "r",
+    "g",
+    "b"
+   ],
+   "ret": "i"
+  },
+  "set_RGB_color": {
+   "kinds": [
+    "i",
+    "i"
+   ],
+   "kw": [
+    "port",
+    "color"
+   ],
+   "ret": "i"
+  },
+  "set_digital_output": {
+   "kinds": [
+    "i",
+    "i"
+   ],
+   "kw": [
+    "port",
+    "state"
+   ],
+   "ret": "i"
+  },
+  "set_display_num": {
+   "kinds": [
+    "i"
+   ],
+   "kw": [
+    "number"
+   ],
+   "ret": "i"
+  },
+  "set_dual_motor_angle": {
+   "kinds": [
+    "i",
+    "i",
+    "i",
+    "i",
+    "i"
+   ],
+   "kw": [
+    "m1",
+    "s1",
+    "m2",
+    "s2",
+    "degrees"
+   ],
+   "ret": "i"
+  },
+  "set_dual_motor_time": {
+   "kinds": [
+    "i",
+    "i",
+    "i",
+    "i",
+    "f"
+   ],
+   "kw": [
+    "m1",
+    "s1",
+    "m2",
+    "s2",
+    "seconds"
+   ],
+   "ret": "i"
+  },
+  "set_light": {
+   "kinds": [
+    "i",
+    "i"
+   ],
+   "kw": [
+    "port",
+    "state"
+   ],
+   "ret": "i"
+  },
+  "set_magnet": {
+   "kinds": [
+    "i",
+    "i"
+   ],
+   "kw": [
+    "port",
+    "state"
+   ],
+   "ret": "i"
+  },
+  "set_motor": {
+   "kinds": [
+    "i",
+    "i"
+   ],
+   "kw": [
+    "motor",
+    "speed"
+   ],
+   "ret": "i"
+  },
+  "set_motor_angle": {
+   "kinds": [
+    "i",
+    "i",
+    "i"
+   ],
+   "kw": [
+    "motor",
+    "speed",
+    "degrees"
+   ],
+   "ret": "i"
+  },
+  "set_motor_time": {
+   "kinds": [
+    "i",
+    "i",
+    "f"
+   ],
+   "kw": [
+    "motor",
+    "speed",
+    "seconds"
+   ],
+   "ret": "i"
+  },
+  "set_servo_angle": {
+   "kinds": [
+    "i",
+    "i",
+    "i"
+   ],
+   "kw": [
+    "servo",
+    "speed",
+    "angle"
+   ],
+   "ret": "i"
+  },
+  "set_servo_rotation": {
+   "kinds": [
+    "i",
+    "i"
+   ],
+   "kw": [
+    "servo",
+    "speed"
+   ],
+   "ret": "i"
+  },
+  "single_grayscale_detected": {
+   "kinds": [
+    "i",
+    "i"
+   ],
+   "kw": [
+    "p",
+    "line"
+   ],
+   "ret": "i"
+  },
+  "sleep": {
+   "kinds": [
+    "i"
+   ],
+   "kw": [
+    "milliseconds"
+   ],
+   "ret": "i"
+  },
+  "start_motor_angle": {
+   "kinds": [
+    "i",
+    "i",
+    "i"
+   ],
+   "kw": [
+    "l",
+    "r",
+    "degrees"
+   ],
+   "ret": "i"
+  },
+  "start_motor_sensor": {
+   "kinds": [
+    "i",
+    "i",
+    "i",
+    "i",
+    "i"
+   ],
+   "kw": [
+    "l",
+    "r",
+    "port",
+    "cmp",
+    "v"
+   ],
+   "ret": "i"
+  },
+  "start_motor_time": {
+   "kinds": [
+    "i",
+    "i",
+    "f"
+   ],
+   "kw": [
+    "l",
+    "r",
+    "seconds"
+   ],
+   "ret": "i"
+  },
+  "stop_move": {
+   "kinds": [],
+   "kw": [],
+   "ret": "i"
+  },
+  "timer": {
+   "kinds": [],
+   "kw": [],
+   "ret": "f"
+  },
+  "touch_switch_pressed": {
+   "kinds": [
+    "i"
+   ],
+   "kw": [
+    "port"
+   ],
+   "ret": "i"
+  },
+  "vTaskDelay": {
+   "kinds": [
+    "i"
+   ],
+   "kw": [
+    "ticks"
+   ],
+   "ret": "i"
+  },
+  "wait": {
+   "kinds": [
+    "i"
+   ],
+   "kw": [
+    "milliseconds"
+   ],
+   "ret": "i"
+  },
+  "write_EEPROM": {
+   "kinds": [
+    "i",
+    "i"
+   ],
+   "kw": [
+    "address",
+    "value"
+   ],
+   "ret": "i"
+  }
+ },
+ "help": [
+  {
+   "category": "AI",
+   "description": "AI camera image ID (needs an AI-camera module; not available on the MC101s).",
+   "name": "get_AI_image",
+   "signature": "get_AI_image(port)"
+  },
+  {
+   "category": "AI",
+   "description": "AI voice command ID (needs an AI-voice module; not available on the MC101s).",
+   "name": "get_AI_voice",
+   "signature": "get_AI_voice()"
+  },
+  {
+   "category": "Display",
+   "description": "Clear the controller screen.",
+   "name": "clear_screen",
+   "signature": "clear_screen()"
+  },
+  {
+   "category": "Display",
+   "description": "Draw an 8x8 pattern: eight row bitmasks 0..255, top row first. 0b11111111 = 255 = full row.",
+   "name": "display_custom",
+   "signature": "display_custom(port, r0, r1, ..., r7)"
+  },
+  {
+   "category": "Display",
+   "description": "Show a number on a digital tube display.",
+   "name": "display_digital_tube",
+   "signature": "display_digital_tube(port, number)"
+  },
+  {
+   "category": "Display",
+   "description": "Show two numbers (a score) on a tube.",
+   "name": "display_digital_tube_score",
+   "signature": "display_digital_tube_score(p, left, right)"
+  },
+  {
+   "category": "Display",
+   "description": "Show a LED_emoji_* face across two matrix eyes.",
+   "name": "display_emotion",
+   "signature": "display_emotion(left_port, right_port, emoji)"
+  },
+  {
+   "category": "Display",
+   "description": "Show a number on the controller screen.",
+   "name": "display_screen",
+   "signature": "display_screen(number)"
+  },
+  {
+   "category": "Display",
+   "description": "Show a LED_symbol_* pattern on a matrix display.",
+   "name": "display_symbol",
+   "signature": "display_symbol(port, symbol)"
+  },
+  {
+   "category": "Display",
+   "description": "Turn an LED port off.",
+   "name": "off_LED",
+   "signature": "off_LED(port)"
+  },
+  {
+   "category": "Display",
+   "description": "Turn an RGB light off.",
+   "name": "off_RGB_color",
+   "signature": "off_RGB_color(port)"
+  },
+  {
+   "category": "Display",
+   "description": "Clear a digital tube display.",
+   "name": "off_digital_tube",
+   "signature": "off_digital_tube(port)"
+  },
+  {
+   "category": "Display",
+   "description": "Clear the emotion eyes.",
+   "name": "off_emotion",
+   "signature": "off_emotion(left_port, right_port)"
+  },
+  {
+   "category": "Display",
+   "description": "Play a number through the audio pipeline (vendor PlaySensorNum; needs the speech data and speaker). Does not draw on the screen.",
+   "name": "read_number",
+   "signature": "read_number(number)"
+  },
+  {
+   "category": "Display",
+   "description": "Set an RGB LED light by red/green/blue 0..255.",
+   "name": "set_RGB",
+   "signature": "set_RGB(port, r, g, b)"
+  },
+  {
+   "category": "Display",
+   "description": "Set an RGB LED from a named color (color_red, ...).",
+   "name": "set_RGB_color",
+   "signature": "set_RGB_color(port, color)"
+  },
+  {
+   "category": "Display",
+   "description": "Show a number (0..9999) on the controller face display.",
+   "name": "set_display_num",
+   "signature": "set_display_num(number)"
+  },
+  {
+   "category": "Display",
+   "description": "Switch a light on/off (switch_on / switch_off).",
+   "name": "set_light",
+   "signature": "set_light(port, state)"
+  },
+  {
+   "category": "Driving",
+   "description": "Drive both wheels: move_forward, move_backward, move_turnleft, move_turnright.",
+   "name": "move",
+   "signature": "move(direction, speed)"
+  },
+  {
+   "category": "Driving",
+   "description": "Drive for a time, then stop.",
+   "name": "move_time",
+   "signature": "move_time(direction, speed, seconds)"
+  },
+  {
+   "category": "Driving",
+   "description": "Omni-wheel move at power % towards a heading in degrees (needs the 4-motor omni base).",
+   "name": "omni_wheel_ctrl",
+   "signature": "omni_wheel_ctrl(power, degrees)"
+  },
+  {
+   "category": "Driving",
+   "description": "Stop omni-wheel move.",
+   "name": "omni_wheel_stop",
+   "signature": "omni_wheel_stop()"
+  },
+  {
+   "category": "Driving",
+   "description": "Omni-wheel spin: omni_turnleft / omni_turnright.",
+   "name": "omni_wheel_turn",
+   "signature": "omni_wheel_turn(direction, power)"
+  },
+  {
+   "category": "Driving",
+   "description": "Stop driving immediately.",
+   "name": "stop_move",
+   "signature": "stop_move()"
+  },
+  {
+   "category": "IO",
+   "description": "Read a raw analog value.",
+   "name": "get_analog_input",
+   "signature": "get_analog_input(port)"
+  },
+  {
+   "category": "IO",
+   "description": "Read a digital input bit.",
+   "name": "get_digital_input",
+   "signature": "get_digital_input(port)"
+  },
+  {
+   "category": "IO",
+   "description": "Read stored value.",
+   "name": "read_EEPROM",
+   "signature": "read_EEPROM(address)"
+  },
+  {
+   "category": "IO",
+   "description": "Drive a digital output.",
+   "name": "set_digital_output",
+   "signature": "set_digital_output(port, state)"
+  },
+  {
+   "category": "IO",
+   "description": "Store a value (persists across reboots).",
+   "name": "write_EEPROM",
+   "signature": "write_EEPROM(address, value)"
+  },
+  {
+   "category": "Motors",
+   "description": "Read back the current speed of a motor.",
+   "name": "get_motor_speed",
+   "signature": "get_motor_speed(motor)"
+  },
+  {
+   "category": "Motors",
+   "description": "Switch one motor off.",
+   "name": "off_motor",
+   "signature": "off_motor(motor)"
+  },
+  {
+   "category": "Motors",
+   "description": "Reverse the spin direction of a motor.",
+   "name": "reverse_motor",
+   "signature": "reverse_motor(motor)"
+  },
+  {
+   "category": "Motors",
+   "description": "Rotate two motors by an angle.",
+   "name": "set_dual_motor_angle",
+   "signature": "set_dual_motor_angle(m1, s1, m2, s2, degrees)"
+  },
+  {
+   "category": "Motors",
+   "description": "Run two motors at different speeds for a time.",
+   "name": "set_dual_motor_time",
+   "signature": "set_dual_motor_time(m1, s1, m2, s2, seconds)"
+  },
+  {
+   "category": "Motors",
+   "description": "Run one motor (A, B, C, D) at speed -100..100. 0 = stop.",
+   "name": "set_motor",
+   "signature": "set_motor(motor, speed)"
+  },
+  {
+   "category": "Motors",
+   "description": "Rotate one motor by an angle (encoder-based).",
+   "name": "set_motor_angle",
+   "signature": "set_motor_angle(motor, speed, degrees)"
+  },
+  {
+   "category": "Motors",
+   "description": "Run one motor for a time, then it stops.",
+   "name": "set_motor_time",
+   "signature": "set_motor_time(motor, speed, seconds)"
+  },
+  {
+   "category": "Numbers",
+   "description": "Remainder of a / b.",
+   "name": "math_modulus",
+   "signature": "math_modulus(a, b)"
+  },
+  {
+   "category": "Numbers",
+   "description": "Random whole number between min and max.",
+   "name": "random_number",
+   "signature": "random_number(min, max)"
+  },
+  {
+   "category": "Patrol",
+   "description": "Calibrate line following to ambient light.",
+   "name": "patrol_ambient_detection",
+   "signature": "patrol_ambient_detection()"
+  },
+  {
+   "category": "Patrol",
+   "description": "Wait for the start button.",
+   "name": "patrol_button",
+   "signature": "patrol_button()"
+  },
+  {
+   "category": "Patrol",
+   "description": "Start line following with the 5-in-1 grayscale: left motor+speed, right motor+speed.",
+   "name": "patrol_integrated_initialization",
+   "signature": "patrol_integrated_initialization(lm, ls, rm, rs)"
+  },
+  {
+   "category": "Patrol",
+   "description": "Line following on the omni base with the 5-in-1 sensor.",
+   "name": "patrol_omni_wheel_integrated_init",
+   "signature": "patrol_omni_wheel_integrated_init(a, b, c, d)"
+  },
+  {
+   "category": "Patrol",
+   "description": "Line following on the omni base with 5 single sensors.",
+   "name": "patrol_omni_wheel_single_init",
+   "signature": "patrol_omni_wheel_single_init(a, b, c, d, p1..p5)"
+  },
+  {
+   "category": "Patrol",
+   "description": "Handle a crossing: intersection_left, intersection_T, intersection_right.",
+   "name": "patrol_road",
+   "signature": "patrol_road(intersection, speed, seconds)"
+  },
+  {
+   "category": "Patrol",
+   "description": "Line following with 5 single grayscale sensors on ports P1..P5.",
+   "name": "patrol_single_initialization",
+   "signature": "patrol_single_initialization(lm, ls, rm, rs, p1..p5)"
+  },
+  {
+   "category": "Patrol",
+   "description": "Set the line-following speed.",
+   "name": "patrol_speed",
+   "signature": "patrol_speed(speed)"
+  },
+  {
+   "category": "Patrol",
+   "description": "Follow the line for a time.",
+   "name": "patrol_time",
+   "signature": "patrol_time(speed, seconds)"
+  },
+  {
+   "category": "Patrol",
+   "description": "Turn off/onto the line: turn_left, turn_center, turn_right.",
+   "name": "patrol_turn",
+   "signature": "patrol_turn(turn, left_speed, right_speed)"
+  },
+  {
+   "category": "Patrol",
+   "description": "Drive both wheels by angle.",
+   "name": "start_motor_angle",
+   "signature": "start_motor_angle(l, r, degrees)"
+  },
+  {
+   "category": "Patrol",
+   "description": "Drive until a port reading crosses a threshold (compare_less_than, ...).",
+   "name": "start_motor_sensor",
+   "signature": "start_motor_sensor(l, r, port, cmp, v)"
+  },
+  {
+   "category": "Patrol",
+   "description": "Drive both wheels (line-follow mode) for a time.",
+   "name": "start_motor_time",
+   "signature": "start_motor_time(l, r, seconds)"
+  },
+  {
+   "category": "Sensors",
+   "description": "True while a controller key is held (key_enter, key_left, key_right).",
+   "name": "button_pressed",
+   "signature": "button_pressed(key)"
+  },
+  {
+   "category": "Sensors",
+   "description": "True if the color sensor sees color_red, color_green, ...",
+   "name": "color_detected",
+   "signature": "color_detected(port, color)"
+  },
+  {
+   "category": "Sensors",
+   "description": "Raw color sensor reading (color number).",
+   "name": "color_value",
+   "signature": "color_value(port)"
+  },
+  {
+   "category": "Sensors",
+   "description": "Ambient light sensor value.",
+   "name": "get_ambient_light",
+   "signature": "get_ambient_light(port)"
+  },
+  {
+   "category": "Sensors",
+   "description": "Bluetooth remote bitmask (advanced; bits are vendor-defined).",
+   "name": "get_bt_remote_control",
+   "signature": "get_bt_remote_control()"
+  },
+  {
+   "category": "Sensors",
+   "description": "Read the motor encoder counter (A..D).",
+   "name": "get_encoder_value",
+   "signature": "get_encoder_value(motor)"
+  },
+  {
+   "category": "Sensors",
+   "description": "Flame sensor value.",
+   "name": "get_flame",
+   "signature": "get_flame(port)"
+  },
+  {
+   "category": "Sensors",
+   "description": "Humidity sensor reading in percent.",
+   "name": "get_humidity",
+   "signature": "get_humidity(port)"
+  },
+  {
+   "category": "Sensors",
+   "description": "IR ranging value (0..~4000, smaller = closer).",
+   "name": "get_infrared_distance",
+   "signature": "get_infrared_distance(port)"
+  },
+  {
+   "category": "Sensors",
+   "description": "5-in-1 grayscale channel 1..5 reading (0..100, higher = darker: black line is above ~60, white below ~20). Must call patrol_integrated_initialization first or the controller crashes!",
+   "name": "get_integrated_grayscale",
+   "signature": "get_integrated_grayscale(channel)"
+  },
+  {
+   "category": "Sensors",
+   "description": "Single grayscale value (0..100, higher = darker: black line above ~50, white below ~20).",
+   "name": "get_single_grayscale",
+   "signature": "get_single_grayscale(port)"
+  },
+  {
+   "category": "Sensors",
+   "description": "Sound volume level from the microphone port.",
+   "name": "get_sound_volume",
+   "signature": "get_sound_volume(port)"
+  },
+  {
+   "category": "Sensors",
+   "description": "Temperature sensor reading in Celsius.",
+   "name": "get_temperature",
+   "signature": "get_temperature(port)"
+  },
+  {
+   "category": "Sensors",
+   "description": "Ultrasonic distance in cm.",
+   "name": "get_ultrasonic_distance",
+   "signature": "get_ultrasonic_distance(port)"
+  },
+  {
+   "category": "Sensors",
+   "description": "True if black_line (reading > ~60) or white_line (< ~20) under the 5-in-1 sensor channel 1..5.",
+   "name": "integrated_grayscale_detected",
+   "signature": "integrated_grayscale_detected(ch, line)"
+  },
+  {
+   "category": "Sensors",
+   "description": "True if the magnetic sensor detects a field.",
+   "name": "magnetic_detected",
+   "signature": "magnetic_detected(port)"
+  },
+  {
+   "category": "Sensors",
+   "description": "True while the IR sensor sees an obstacle.",
+   "name": "obstacle_infrared_detected",
+   "signature": "obstacle_infrared_detected(port)"
+  },
+  {
+   "category": "Sensors",
+   "description": "Reset a motor encoder counter to 0.",
+   "name": "reset_motor_encoder",
+   "signature": "reset_motor_encoder(motor)"
+  },
+  {
+   "category": "Sensors",
+   "description": "True if black_line (reading > ~50) or white_line (< ~20) detected.",
+   "name": "single_grayscale_detected",
+   "signature": "single_grayscale_detected(p, line)"
+  },
+  {
+   "category": "Sensors",
+   "description": "True while the touch switch is pressed.",
+   "name": "touch_switch_pressed",
+   "signature": "touch_switch_pressed(port)"
+  },
+  {
+   "category": "Servos",
+   "description": "Re-enable servo torque (after it was released).",
+   "name": "restore_torque",
+   "signature": "restore_torque()"
+  },
+  {
+   "category": "Servos",
+   "description": "Move a servo (S1..S18) to an angle at a speed.",
+   "name": "set_servo_angle",
+   "signature": "set_servo_angle(servo, speed, angle)"
+  },
+  {
+   "category": "Servos",
+   "description": "Rotate a servo continuously at a speed.",
+   "name": "set_servo_rotation",
+   "signature": "set_servo_rotation(servo, speed)"
+  },
+  {
+   "category": "Sound",
+   "description": "Play back the recording.",
+   "name": "play_record",
+   "signature": "play_record()"
+  },
+  {
+   "category": "Sound",
+   "description": "Play a built-in sound (sound_dog, sound_laugh, sound_piano_do, ...).",
+   "name": "play_sound",
+   "signature": "play_sound(sound)"
+  },
+  {
+   "category": "Sound",
+   "description": "Record sound to the module on a port.",
+   "name": "recorder",
+   "signature": "recorder(port)"
+  },
+  {
+   "category": "Sound",
+   "description": "Electromagnet on/off (switch_on / switch_off).",
+   "name": "set_magnet",
+   "signature": "set_magnet(port, state)"
+  },
+  {
+   "category": "Timing",
+   "description": "Restart the timer at 0.",
+   "name": "reset_timer",
+   "signature": "reset_timer()"
+  },
+  {
+   "category": "Timing",
+   "description": "Pause the program.",
+   "name": "sleep",
+   "signature": "sleep(milliseconds)"
+  },
+  {
+   "category": "Timing",
+   "description": "Seconds since boot (or since reset).",
+   "name": "timer",
+   "signature": "timer()"
+  },
+  {
+   "category": "Timing",
+   "description": "Pause by OS ticks (1 tick = 1 ms).",
+   "name": "vTaskDelay",
+   "signature": "vTaskDelay(ticks)"
+  },
+  {
+   "category": "Timing",
+   "description": "Pause the program (alias for sleep).",
+   "name": "wait",
+   "signature": "wait(milliseconds)"
+  }
+ ],
+ "js_header": "// Generated by Whale Instructor (py2c.py) from the user's program.\n// The generated code belongs to the program's author, who may license\n// their own program however they like -- the Whale Instructor GPL does\n// not apply to user programs (see LICENSE_EXCEPTION.md).\n// Runs live over Bluetooth against the `whale` runtime (js/whale_ble.js).\n",
+ "sugar": {
+  "builtins": [
+   "abs",
+   "max",
+   "min"
+  ],
+  "devices": {
+   "ColorSensor": {
+    "accepts": {
+     "color_detected": [
+      0
+     ],
+     "color_value": [
+      0
+     ]
+    },
+    "methods": {
+     "detected": {
+      "api": "color_detected",
+      "args": [
+       "h",
+       "a0"
+      ],
+      "kw": [
+       "color"
+      ]
+     },
+     "value": {
+      "api": "color_value",
+      "args": [
+       "h"
+      ],
+      "kw": []
+     }
+    }
+   },
+   "InfraredSensor": {
+    "accepts": {
+     "get_infrared_distance": [
+      0
+     ],
+     "obstacle_infrared_detected": [
+      0
+     ]
+    },
+    "methods": {
+     "obstacle": {
+      "api": "obstacle_infrared_detected",
+      "args": [
+       "h"
+      ],
+      "kw": []
+     },
+     "value": {
+      "api": "get_infrared_distance",
+      "args": [
+       "h"
+      ],
+      "kw": []
+     }
+    }
+   },
+   "Motor": {
+    "accepts": {
+     "get_encoder_value": [
+      0
+     ],
+     "get_motor_speed": [
+      0
+     ],
+     "off_motor": [
+      0
+     ],
+     "reset_motor_encoder": [
+      0
+     ],
+     "reverse_motor": [
+      0
+     ],
+     "set_dual_motor_angle": [
+      0,
+      2
+     ],
+     "set_dual_motor_time": [
+      0,
+      2
+     ],
+     "set_motor": [
+      0
+     ],
+     "set_motor_angle": [
+      0
+     ],
+     "set_motor_time": [
+      0
+     ]
+    },
+    "methods": {
+     "angle": {
+      "api": "get_encoder_value",
+      "args": [
+       "h"
+      ],
+      "kw": []
+     },
+     "off": {
+      "api": "off_motor",
+      "args": [
+       "h"
+      ],
+      "kw": []
+     },
+     "reset_angle": {
+      "api": "reset_motor_encoder",
+      "args": [
+       "h"
+      ],
+      "kw": []
+     },
+     "reverse": {
+      "api": "reverse_motor",
+      "args": [
+       "h"
+      ],
+      "kw": []
+     },
+     "set": {
+      "api": "set_motor",
+      "args": [
+       "h",
+       "a0"
+      ],
+      "kw": [
+       "speed"
+      ]
+     },
+     "set_angle": {
+      "api": "set_motor_angle",
+      "args": [
+       "h",
+       "a0",
+       "a1"
+      ],
+      "kw": [
+       "speed",
+       "degrees"
+      ]
+     },
+     "set_time": {
+      "api": "set_motor_time",
+      "args": [
+       "h",
+       "a0",
+       "a1"
+      ],
+      "kw": [
+       "speed",
+       "seconds"
+      ]
+     },
+     "speed": {
+      "api": "get_motor_speed",
+      "args": [
+       "h"
+      ],
+      "kw": []
+     }
+    }
+   },
+   "SoundSensor": {
+    "accepts": {
+     "get_sound_volume": [
+      0
+     ]
+    },
+    "methods": {
+     "value": {
+      "api": "get_sound_volume",
+      "args": [
+       "h"
+      ],
+      "kw": []
+     }
+    }
+   },
+   "TouchSensor": {
+    "accepts": {
+     "touch_switch_pressed": [
+      0
+     ]
+    },
+    "methods": {
+     "pressed": {
+      "api": "touch_switch_pressed",
+      "args": [
+       "h"
+      ],
+      "kw": []
+     }
+    }
+   },
+   "UltrasonicSensor": {
+    "accepts": {
+     "get_ultrasonic_distance": [
+      0
+     ]
+    },
+    "methods": {
+     "value": {
+      "api": "get_ultrasonic_distance",
+      "args": [
+       "h"
+      ],
+      "kw": []
+     }
+    }
+   }
+  }
+ }
+}

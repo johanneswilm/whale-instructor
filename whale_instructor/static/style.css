@@ -1,0 +1,399 @@
+/* Whale Instructor UI (GPL-3.0-or-later) */
+:root {
+  --bg: #f4f7fb;
+  --panel: #ffffff;
+  --ink: #1c2b3a;
+  --muted: #5b6b7b;
+  --accent: #0e7ac4;
+  --accent-dark: #0a5d96;
+  --danger: #c62828;
+  --ok: #2e7d32;
+  --border: #d4dde7;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", Arial, sans-serif;
+  color: var(--ink);
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+}
+
+button {
+  font: inherit;
+  padding: 6px 14px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--panel);
+  color: var(--ink);
+  cursor: pointer;
+}
+button:hover { border-color: var(--accent); }
+button.primary {
+  background: var(--accent);
+  border-color: var(--accent-dark);
+  color: #fff;
+  font-weight: 600;
+}
+button.primary:hover { background: var(--accent-dark); }
+button.danger {
+  background: var(--danger);
+  border-color: #8e1b1b;
+  color: #fff;
+  font-weight: 700;
+}
+button:disabled { opacity: 0.45; cursor: default; }
+
+header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 14px;
+  background: var(--panel);
+  border-bottom: 1px solid var(--border);
+}
+
+.banner {
+  padding: 8px 14px;
+  background: #fff8e1;
+  border-bottom: 1px solid #e0c97a;
+  color: #6b5a1e;
+  font-size: 14px;
+}
+#logo { font-size: 18px; font-weight: 700; color: var(--accent-dark); }
+#logo img {
+  vertical-align: -5px;   /* optically center against the 18px text */
+  margin-right: 2px;
+}
+#langSel {
+  font: inherit;
+  padding: 4px 6px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+.spacer { flex: 1; }
+
+.connspinner {
+  width: 12px; height: 12px;
+  display: inline-block;
+  border: 2px solid rgba(159, 179, 200, .35);
+  border-top-color: #8ec7f2;
+  border-radius: 50%;
+  animation: whb-spin .8s linear infinite;
+}
+/* the display rule above would otherwise beat the UA [hidden] rule,
+ * leaving the spinner spinning forever */
+.connspinner[hidden] { display: none; }
+
+.dot {
+  width: 12px; height: 12px;
+  border-radius: 50%;
+  display: inline-block;
+  background: #999;
+}
+.dot.off { background: #c0392b; }
+.dot.ok { background: var(--ok); }
+
+#toolbar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 8px 14px;
+  background: var(--panel);
+  border-bottom: 1px solid var(--border);
+}
+#toolbar input, #toolbar select {
+  font: inherit;
+  padding: 6px 8px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+#progName { width: 170px; }
+.sep { width: 1px; height: 26px; background: var(--border); margin: 0 4px; }
+
+#tabs {
+  display: flex;
+  gap: 4px;
+  padding: 6px 14px 0;
+  background: var(--panel);
+  border-bottom: 1px solid var(--border);
+}
+.tab {
+  border-radius: 8px 8px 0 0;
+  border-bottom: none;
+  font-weight: 600;
+}
+.tab.active {
+  background: var(--bg);
+  color: var(--accent-dark);
+  border-color: var(--accent);
+  border-bottom: 1px solid var(--bg);
+  margin-bottom: -1px;
+}
+.tab.disabled {
+  opacity: 0.45;
+  cursor: default;
+  pointer-events: none;
+}
+
+main { flex: 1; position: relative; min-height: 0; }
+.tabpane {
+  position: absolute;
+  inset: 0;
+  display: none;
+  flex-direction: column;
+}
+.tabpane.active { display: flex; }
+
+#blocklyDiv { flex: 1; min-height: 0; }
+
+#tab-python textarea, #tab-c textarea {
+  flex: 1;
+  width: 100%;
+  border: none;
+  resize: none;
+}
+.CodeMirror { flex: 1; height: auto !important; }
+
+.hintbar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 14px;
+  background: var(--panel);
+  border-top: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 13px;
+}
+
+/* ---- debug pane ---- */
+
+.debugwrap {
+  flex: 1;
+  display: flex;
+  gap: 20px;
+  padding: 16px;
+  overflow-y: auto;
+  align-items: flex-start;
+}
+.debugcol {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 14px 16px;
+  min-width: 340px;
+  max-width: 560px;
+}
+.debugcol h3 { margin: 0 0 10px; }
+.dbgrow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+.dbgrow label { width: 110px; font-size: 14px; }
+.dbgrow input[type="range"] { flex: 1; }
+.dbgrow input[type="number"] { width: 64px; }
+.dbgrow select { font: inherit; padding: 4px; }
+.dbgval {
+  min-width: 48px;
+  padding: 4px 8px;
+  background: #14202c;
+  color: #cde3f5;
+  border-radius: 6px;
+  font: 13px/1.4 Consolas, monospace;
+}
+.dbgnote {
+  color: var(--muted);
+  font-size: 12.5px;
+  margin: 8px 0 0;
+}
+
+/* ---- help pane ---- */
+
+.helpbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  background: var(--panel);
+  border-bottom: 1px solid var(--border);
+}
+#helpSearch {
+  flex: 1;
+  max-width: 480px;
+  font: inherit;
+  padding: 7px 10px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+.helpmeta { color: var(--muted); font-size: 13px; }
+.helplist {
+  flex: 1;
+  overflow-y: auto;
+  padding: 10px 16px 20px;
+}
+.helplist h3 {
+  margin: 14px 0 6px;
+  font-size: 14px;
+  color: var(--accent-dark);
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 3px;
+}
+.helpitem {
+  display: flex;
+  gap: 12px;
+  align-items: baseline;
+  padding: 5px 8px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.helpitem:hover { background: #e8f2fb; }
+.helpitem code {
+  font: 13px/1.5 Consolas, "DejaVu Sans Mono", monospace;
+  color: #0a5d96;
+  white-space: nowrap;
+}
+.helpitem span {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+/* ---- bottom bar + log ---- */
+
+#bottombar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 4px 14px;
+  background: var(--panel);
+  border-top: 1px solid var(--border);
+  font-size: 13px;
+}
+.btab {
+  padding: 3px 12px;
+  font-size: 13px;
+  border-radius: 8px 8px 0 0;
+}
+.unread {
+  background: var(--danger);
+  color: #fff;
+  border-radius: 10px;
+  padding: 1px 8px;
+  font-size: 12px;
+  font-weight: 700;
+}
+#statusLine { color: var(--muted); }
+
+#logpane {
+  height: 180px;
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid var(--border);
+  background: #14202c;
+}
+#logpane[hidden] { display: none; }
+#logGrip {
+  height: 6px;
+  cursor: ns-resize;
+  background: #2a3d50;
+  flex: none;
+}
+#logGrip:hover { background: #3d5a75; }
+.CodeMirror { direction: ltr; }
+.loghead {
+  padding: 4px 14px;
+  color: #9fb3c8;
+  font-size: 13px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+.loghead button {
+  padding: 1px 8px;
+  font-size: 12px;
+  background: transparent;
+  color: #9fb3c8;
+  border-color: #31465a;
+}
+#log {
+  flex: 1;
+  margin: 0;
+  overflow-y: auto;
+  padding: 4px 14px 10px;
+  color: #cde3f5;
+  font: 12px/1.5 "Cascadia Code", Consolas, "DejaVu Sans Mono", monospace;
+  white-space: pre-wrap;
+}
+#log .err { color: #ff8a80; }
+#log .okline { color: #9be89d; }
+#log .spinline { color: #8ec7f2; }
+#log .spinline::before {
+  content: "";
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  margin-right: 7px;
+  border: 2px solid rgba(142, 199, 242, .35);
+  border-top-color: #8ec7f2;
+  border-radius: 50%;
+  animation: whb-spin .8s linear infinite;
+}
+@keyframes whb-spin { to { transform: rotate(360deg); } }
+
+.hint {
+  padding: 4px 14px;
+  color: var(--muted);
+  font-size: 13px;
+  background: var(--panel);
+  border-top: 1px solid var(--border);
+}
+
+/* ---- settings dialog ---- */
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(12, 24, 38, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+.overlay[hidden] { display: none; }
+.dialog {
+  background: var(--panel);
+  border-radius: 14px;
+  padding: 18px 22px;
+  width: min(560px, 92vw);
+  max-height: 86vh;
+  overflow-y: auto;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+}
+.dialog h2 { margin: 0 0 10px; font-size: 18px; }
+.dialog h3 {
+  margin: 14px 0 6px;
+  font-size: 14px;
+  color: var(--accent-dark);
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 3px;
+}
+.setrow { margin: 8px 0; font-size: 14px; }
+.setrow select { font: inherit; padding: 5px 8px; }
+.setcheck {
+  display: block;
+  font-size: 14px;
+  padding: 3px 2px;
+  cursor: pointer;
+}
+.setbtns {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  margin-top: 14px;
+}

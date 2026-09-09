@@ -1,0 +1,4 @@
+[console_scripts]
+whale = whale_instructor.whale_cli:main
+whale-fetch-vendor = whale_instructor.tools_fetch_vendor:main
+whale-ide = whale_instructor.serve_ide:main

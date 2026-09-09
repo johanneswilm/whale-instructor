@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="ocean" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0284c7"/>
+      <stop offset="1" stop-color="#38bdf8"/>
+    </linearGradient>
+    <linearGradient id="body" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#dbeefc"/>
+    </linearGradient>
+  </defs>
+  <rect x="8" y="8" width="496" height="496" rx="112" fill="url(#ocean)"/>
+  <circle cx="130" cy="140" r="34" fill="#7dd3fc" opacity="0.45"/>
+  <circle cx="396" cy="392" r="52" fill="#0284c7" opacity="0.35"/>
+  <circle cx="408" cy="118" r="20" fill="#bae6fd" opacity="0.5"/>
+  <!-- spout -->
+  <g fill="#e0f2fe">
+    <ellipse cx="128" cy="176" rx="10" ry="17"/>
+    <ellipse cx="100" cy="206" rx="8" ry="13" transform="rotate(-24 100 206)"/>
+    <ellipse cx="156" cy="206" rx="8" ry="13" transform="rotate(24 156 206)"/>
+  </g>
+  <!-- tail -->
+  <g fill="url(#body)">
+    <ellipse cx="392" cy="196" rx="52" ry="30" transform="rotate(-38 392 196)"/>
+    <ellipse cx="428" cy="242" rx="52" ry="30" transform="rotate(28 428 242)"/>
+  </g>
+  <!-- body -->
+  <ellipse cx="252" cy="298" rx="158" ry="98" fill="url(#body)" transform="rotate(-8 252 298)"/>
+  <!-- belly -->
+  <ellipse cx="252" cy="330" rx="118" ry="52" fill="#bfe3fb" transform="rotate(-8 252 330)"/>
+  <!-- flipper -->
+  <ellipse cx="268" cy="372" rx="46" ry="21" fill="#a8d8f8" transform="rotate(24 268 372)"/>
+  <!-- eye -->
+  <circle cx="152" cy="272" r="14" fill="#0c4a6e"/>
+  <circle cx="157" cy="267" r="5" fill="#ffffff"/>
+  <!-- smile -->
+  <path d="M118 300 q 26 24 58 12" fill="none" stroke="#0c4a6e" stroke-width="9" stroke-linecap="round"/>
+</svg>
