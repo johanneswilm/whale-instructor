@@ -93,7 +93,11 @@ def check_python(python):
     """Refuse to build with an interpreter that statically links stdlib
     extension modules (no __file__ for _struct): PyInstaller cannot collect
     them, and the frozen app dies at startup with "Module object for
-    struct is NULL"."""
+    struct is NULL".
+    (Windows CPython always builds _struct into the interpreter and
+    PyInstaller handles that fine, so the check is POSIX-only.)"""
+    if sys.platform == 'win32':
+        return
     r = subprocess.run(
         [python, '-c',
          "import _struct; print(getattr(_struct, '__file__', '') or '')"],

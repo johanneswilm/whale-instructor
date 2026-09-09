@@ -44,19 +44,9 @@ jobs:
             libsoup-3.0-dev libjavascriptcoregtk-4.1-dev \
             libayatana-appindicator3-dev librsvg2-dev libudev-dev
       - name: Build the PyInstaller sidecar
-        if: runner.os != 'Windows'
         run: |
           python -m pip install --upgrade pyinstaller
           python tools_build_bundle.py
-      - name: Build the PyInstaller sidecar (Windows, uv-managed interpreter)
-        if: runner.os == 'Windows'
-        shell: pwsh
-        run: |
-          python -m pip install --upgrade uv
-          uv python install 3.12
-          uv venv --python 3.12 --python-preference only-managed .pyi-venv
-          uv pip install --python .pyi-venv/Scripts/python.exe pyinstaller
-          .pyi-venv/Scripts/python tools_build_bundle.py
       - name: Install the sidecar (posix)
         if: runner.os != 'Windows'
         run: |
