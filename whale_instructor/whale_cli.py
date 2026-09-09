@@ -33,6 +33,11 @@ import struct
 import sys
 import time
 
+try:
+    import hid as _hidapi
+except ImportError:
+    _hidapi = None
+
 VID = 0x2018
 PID = 0x5750
 REPORT_LEN = 64
@@ -69,14 +74,14 @@ def find_hidraw():
     raise OSError('Whale Instructor controller (2018:5750) not found')
 
 
-class Controller:
-    def __init__(self, path=None):
-        self.path = path or find_hidraw()
-        self.fd = None
-        self.seq = 0x00
-        self.ctr = 0x0000
+class _HidrawDevice:
+    """Linux transport: direct /dev/hidraw access (the device-validated
+    path; no third-party dependencies)."""
 
-    # -- transport ---------------------------------------------------------
+    def __init__(self, path):
+        self.path = path
+        self.fd = None
+
     def open(self):
         self.fd = os.open(self.path, os.O_RDWR | os.O_NONBLOCK)
         try:
@@ -90,11 +95,11 @@ class Controller:
             os.close(self.fd)
             self.fd = None
 
-    def _write(self, frame):
+    def write(self, frame):
         report = frame + b'\x00' * (REPORT_LEN - len(frame))
         os.write(self.fd, b'\x00' + report)
 
-    def _read(self, timeout=0.5):
+    def read(self, timeout=0.5):
         t0 = time.time()
         while time.time() - t0 < timeout:
             try:
@@ -105,6 +110,73 @@ class Controller:
             if data:
                 return data
         return None
+
+
+class _HidapiDevice:
+    """Windows/macOS transport: hidapi bindings (the `hid` package —
+    prebuilt wheels on both platforms, no compiler needed)."""
+
+    def __init__(self):
+        if _hidapi is None:
+            raise SystemExit(
+                'USB support on Windows/macOS needs the `hid` package — '
+                'install whale-instructor with pip (it pulls `hid` in '
+                'automatically there) or run: pip install hid')
+        entries = sorted(_hidapi.enumerate(VID, PID),
+                         key=lambda e: e.get('interface_number', 0))
+        if not entries:
+            raise OSError('Whale Instructor controller (2018:5750) not found')
+        self.path = entries[0]['path']
+        self.dev = None
+
+    def open(self):
+        self.dev = _hidapi.device()
+        self.dev.open_path(self.path)
+        self.dev.set_nonblocking(0)
+
+    def close(self):
+        if self.dev is not None:
+            self.dev.close()
+            self.dev = None
+
+    def write(self, frame):
+        report = frame + b'\x00' * (REPORT_LEN - len(frame))
+        if self.dev.write(b'\x00' + report) < 0:
+            raise IOError('USB write failed')
+
+    def read(self, timeout=0.5):
+        data = self.dev.read(REPORT_LEN, timeout_ms=int(timeout * 1000))
+        return bytes(data) or None
+
+
+def _open_transport(path=None):
+    """Pick the transport for this platform: hidraw on Linux (proven,
+    zero-dep), hidapi elsewhere."""
+    if path is not None:
+        return _HidrawDevice(path)
+    if sys.platform.startswith('linux'):
+        return _HidrawDevice(find_hidraw())
+    return _HidapiDevice()
+
+
+class Controller:
+    def __init__(self, path=None):
+        self._dev = _open_transport(path)
+        self.seq = 0x00
+        self.ctr = 0x0000
+
+    # -- transport ---------------------------------------------------------
+    def open(self):
+        self._dev.open()
+
+    def close(self):
+        self._dev.close()
+
+    def _write(self, frame):
+        self._dev.write(frame)
+
+    def _read(self, timeout=0.5):
+        return self._dev.read(timeout)
 
     def _next_seq(self):
         self.seq = (self.seq + 1) & 0xFF

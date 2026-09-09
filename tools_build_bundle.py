@@ -56,7 +56,7 @@ a = Analysis(
         ({runtime!r}, 'whale_instructor/runtime'),
         ({progs!r}, 'whale_instructor/progs'),
     ],
-    hiddenimports=[],
+    hiddenimports={hiddenimports!r},
     hookspath=[],
     runtime_hooks=[],
     excludes=[],
@@ -71,6 +71,11 @@ exe = EXE(
     upx=False,
 ){collect}
 '''
+
+
+def _hid_available():
+    import importlib.util
+    return importlib.util.find_spec('hid') is not None
 
 
 def pyinstaller_cmd(python=None):
@@ -135,7 +140,8 @@ def write_spec(onewfile):
     spec = SPEC_TEMPLATE.format(
         entry=str(entry), pathex=str(ROOT), static=str(PKG / 'static'),
         runtime=str(PKG / 'runtime'), progs=str(PKG / 'progs'),
-        console=console, binaries_line=binaries_line, collect=collect)
+        console=console, binaries_line=binaries_line, collect=collect,
+        hiddenimports=['hid'] if _hid_available() else [])
     path = BUILD_DIR / 'whale-instructor.spec'
     path.write_text(spec)
     return path

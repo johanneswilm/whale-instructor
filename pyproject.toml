@@ -11,6 +11,11 @@ license = {text = "GPL-3.0-or-later"}
 requires-python = ">=3.9"
 dependencies = []
 
+[project.optional-dependencies]
+# Linux talks to the controller directly through /dev/hidraw (stdlib-only);
+# Windows/macOS need hidapi bindings for the same protocol.
+usb = ["hid; sys_platform == 'win32' or sys_platform == 'darwin'"]
+
 [project.scripts]
 whale = "whale_instructor.whale_cli:main"
 whale-ide = "whale_instructor.serve_ide:main"
