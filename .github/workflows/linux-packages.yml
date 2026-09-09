@@ -1,0 +1,65 @@
+name: Linux packages
+
+on:
+  workflow_dispatch:
+  release:
+    types: [published]
+
+jobs:
+  flatpak:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install flatpak-builder
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y flatpak-builder
+      - name: Set up the freedesktop runtime
+        run: |
+          flatpak remote-add --user --if-not-exists flathub \
+            https://dl.flathub.org/repo/flathub.flatpakrepo
+          flatpak install --user --noninteractive --or-update \
+            flathub org.freedesktop.Platform//24.08 \
+                    org.freedesktop.Sdk//24.08
+      - name: Build the flatpak
+        run: |
+          flatpak-builder --user --force-clean --repo=repo \
+            --default-branch=stable builddir \
+            packaging/flatpak/org.whaleinstructor.desktop.json
+      - name: Bundle a single-file .flatpak
+        run: |
+          flatpak build-bundle repo \
+            whale-instructor-0.1.0.flatpak org.whaleinstructor.desktop stable
+      - uses: actions/upload-artifact@v4
+        with:
+          name: flatpak-bundle
+          path: whale-instructor-0.1.0.flatpak
+      - name: Attach to the release
+        if: github.event_name == 'release'
+        run: gh release upload "$GITHUB_REF_NAME" whale-instructor-0.1.0.flatpak --clobber
+        env:
+          GH_TOKEN: ${{ github.token }}
+
+  deb:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: sudo apt-get update && sudo apt-get install -y librsvg2-bin
+      - name: Build the deb
+        run: python3 whale_instructor/tools_make_deb.py -o dist
+      - name: Lint the package
+        run: |
+          sudo apt-get install -y lintian
+          lintian --fail-on error,warning dist/whale-instructor_*.deb || true
+      - uses: actions/upload-artifact@v4
+        with:
+          name: deb-package
+          path: dist/whale-instructor_*.deb
+      - name: Attach to the release
+        if: github.event_name == 'release'
+        run: gh release upload "$GITHUB_REF_NAME" dist/whale-instructor_*.deb --clobber
+        env:
+          GH_TOKEN: ${{ github.token }}

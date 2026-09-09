@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>org.whaleinstructor.desktop</id>
+  <metadata_license>FSFAP</metadata_license>
+  <project_license>GPL-3.0-or-later</project_license>
+  <name>Whale Instructor</name>
+  <summary>Program WhalesBot MC101s (E7 Pro / AI S1) robots</summary>
+  <description>
+    <p>Whale Instructor is an open-source management suite for WhalesBot
+    MC101s robot controllers (sold as E7 Pro / AI S1): a visual Blocks
+    editor that grows into real Python and real C, a Python-to-C
+    transpiler, a build pipeline for any modern arm-none-eabi toolchain,
+    a USB uploader, a live debug panel, live programming over Bluetooth,
+    and a searchable device-API reference.</p>
+    <p>Programs you write stay yours: the runtime your program is built
+    against is LGPL, your own code carries no license obligations.</p>
+  </description>
+  <launchable type="desktop-id">org.whaleinstructor.desktop.desktop</launchable>
+  <url type="homepage">https://github.com/johanneswilm/whale-instructor</url>
+  <url type="bugtracker">https://github.com/johanneswilm/whale-instructor/issues</url>
+  <developer_name>Johannes Wilm</developer_name>
+  <content_rating type="oars-1.1"/>
+  <releases>
+    <release version="0.1.0" date="2026-09-09">
+      <description><p>First public release.</p></description>
+    </release>
+  </releases>
+  <provides>
+    <binary>whale</binary>
+    <binary>whale-ide</binary>
+    <binary>whale-fetch-toolchain</binary>
+  </provides>
+</component>

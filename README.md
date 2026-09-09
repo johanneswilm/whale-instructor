@@ -359,6 +359,30 @@ odometry), `in`, subscripting, tuple unpacking, `**`, attribute access.
 Errors are reported with line numbers, both at transpile time and in the
 IDE log.
 
+## Releases
+
+Releases are built by GitHub Actions on every GitHub release (and on
+demand via workflow_dispatch):
+
+| artifact | workflow | notes |
+|---|---|---|
+| sdist + wheel on **PyPI** | `pypi.yml` | `pipx install whale-instructor`; PyPI trusted publishing (no secrets in the repo) |
+| **.deb** (Debian/Ubuntu) | `linux-packages.yml` | arch `all`; system Python; `apt install ./whale-instructor_*.deb` |
+| **Flatpak** | `linux-packages.yml` | single-file `whale-instructor-<ver>.flatpak` bundle (freedesktop 24.08) |
+| **desktop bundles** | `desktop.yml` | Linux .deb + .AppImage, macOS .dmg (Apple silicon + Intel), Windows .msi + .exe — Tauri shell with a PyInstaller backend, self-contained |
+
+The Python tests run on every push (`ci.yml`) across Python 3.9–3.14,
+plus the node IDE suite and a `cargo check` of the desktop shell.
+
+### Cutting a release
+
+1. bump `version` in `pyproject.toml`, `desktop/src-tauri/tauri.conf.json`
+   and `desktop/package.json`, commit, tag: `git tag v0.1.0 && git push origin v0.1.0`
+2. draft the GitHub release for that tag and publish it — the workflows
+   build and attach all artifacts automatically (PyPI needs the one-time
+   *trusted publisher* setting on pypi.org: repo `johanneswilm/whale-instructor`,
+   workflow `pypi.yml`, environment `pypi`).
+
 ## Repository layout
 
 | Path | Purpose |

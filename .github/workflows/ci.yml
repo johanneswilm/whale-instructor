@@ -1,0 +1,55 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  python-tests:
+    runs-on: ubuntu-24.04
+    strategy:
+      matrix:
+        python-version: ['3.9', '3.12', '3.14']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Run the py2c suite
+        run: python3 tests/test_py2c.py
+      - name: Build the runtime archives
+        if: matrix.python-version == '3.12'
+        run: |
+          python3 -m whale_instructor.tools_openlibs
+          python3 -m whale_instructor.build_tc \
+            whale_instructor/progs/py_demo.py 1 /tmp/APP_1.bin
+      - name: Lint the deb packaging (build only)
+        if: matrix.python-version == '3.12'
+        run: |
+          sudo apt-get update && sudo apt-get install -y librsvg2-bin
+          python3 whale_instructor/tools_make_deb.py -o /tmp/deb
+
+  ide-tests:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node tests/ide_generators.test.js
+
+  desktop:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - name: Linux Tauri system deps
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libwebkit2gtk-4.1-dev libgtk-3-dev \
+            libsoup-3.0-dev libjavascriptcoregtk-4.1-dev \
+            libayatana-appindicator3-dev librsvg2-dev libudev-dev
+      - name: cargo check the shell
+        working-directory: desktop/src-tauri
+        run: cargo check

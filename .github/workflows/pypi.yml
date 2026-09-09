@@ -1,0 +1,37 @@
+name: PyPI
+
+on:
+  workflow_dispatch:
+  release:
+    types: [published]
+
+permissions:
+  id-token: write   # PyPI trusted publishing (no token in the repo)
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Build sdist and wheel
+        run: |
+          python -m pip install --upgrade build
+          python -m build
+      - name: Check the wheel serves everything
+        run: |
+          pip install --quiet dist/whale_instructor-*.whl
+          python - <<'EOF'
+          import pathlib, whale_instructor
+          pkg = pathlib.Path(whale_instructor.__file__).parent
+          need = ['static/index.html', 'static/vendor/blockly_compressed.js',
+                  'static/favicon.svg', 'runtime/user_api/whale_api.h',
+                  'runtime/user_api/linker/stm32_flash1.ld',
+                  'runtime/user_api/app_main.c', 'progs/py_demo.py']
+          missing = [n for n in need if not (pkg / n).exists()]
+          assert not missing, f'missing from wheel: {missing}'
+          print('wheel contents OK')
+          EOF
+      - uses: pypa/gh-action-pypi-publish@release/v1

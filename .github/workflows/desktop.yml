@@ -1,0 +1,94 @@
+name: Desktop bundles
+
+on:
+  workflow_dispatch:
+  release:
+    types: [published]
+
+jobs:
+  bundle:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-24.04
+            target: x86_64-unknown-linux-gnu
+            sidecar: whale-instructor-x86_64-unknown-linux-gnu
+            node_arch: x64
+          - os: macos-14
+            target: aarch64-apple-darwin
+            sidecar: whale-instructor-aarch64-apple-darwin
+            node_arch: arm64
+          - os: macos-13
+            target: x86_64-apple-darwin
+            sidecar: whale-instructor-x86_64-apple-darwin
+            node_arch: x64
+          - os: windows-latest
+            target: x86_64-pc-windows-msvc
+            sidecar: whale-instructor-x86_64-pc-windows-msvc
+            node_arch: x64
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Linux Tauri system deps
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libwebkit2gtk-4.1-dev libgtk-3-dev \
+            libsoup-3.0-dev libjavascriptcoregtk-4.1-dev \
+            libayatana-appindicator3-dev librsvg2-dev libudev-dev
+      - name: Build the PyInstaller sidecar (onefile)
+        run: |
+          python -m pip install --upgrade pyinstaller
+          python tools_build_bundle.py
+      - name: Install the sidecar (posix)
+        if: runner.os != 'Windows'
+        run: |
+          cp artifacts/bundle/whale-instructor \
+             desktop/src-tauri/binaries/${{ matrix.sidecar }}
+      - name: Install the sidecar (windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          Copy-Item -Force artifacts/bundle/whale-instructor.exe `
+            desktop/src-tauri/binaries/${{ matrix.sidecar }}.exe
+      - name: Build the Tauri app
+        working-directory: desktop
+        run: |
+          npm install --no-fund --no-audit
+          npm run tauri build -- --target ${{ matrix.target }}
+      - name: Collect Linux bundles
+        if: runner.os == 'Linux'
+        run: |
+          mkdir dist
+          cp desktop/src-tauri/target/${{ matrix.target }}/release/bundle/deb/*.deb dist/ || true
+          cp desktop/src-tauri/target/${{ matrix.target }}/release/bundle/appimage/*.AppImage dist/ || true
+      - name: Collect macOS bundles
+        if: runner.os == 'macOS'
+        run: |
+          mkdir dist
+          cp desktop/src-tauri/target/${{ matrix.target }}/release/bundle/dmg/*.dmg dist/ || true
+          cp desktop/src-tauri/target/${{ matrix.target }}/release/bundle/macos/*.app.tar.gz dist/ || true
+      - name: Collect Windows bundles
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory dist | Out-Null
+          Copy-Item desktop/src-tauri/target/release/bundle/msi/*.msi dist/ -ErrorAction SilentlyContinue
+          Copy-Item desktop/src-tauri/target/release/bundle/nsis/*.exe dist/ -ErrorAction SilentlyContinue
+      - uses: actions/upload-artifact@v4
+        with:
+          name: desktop-${{ matrix.os }}
+          path: dist/*
+      - name: Attach to the release
+        if: github.event_name == 'release'
+        shell: bash
+        run: gh release upload "$GITHUB_REF_NAME" dist/* --clobber
+        env:
+          GH_TOKEN: ${{ github.token }}
