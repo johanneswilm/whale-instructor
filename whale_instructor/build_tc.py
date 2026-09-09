@@ -291,7 +291,9 @@ def build(user_main, slot, out_bin, gcc, debian, objs_gcc=None, objs_debian=Fals
             sys.exit('libwhale_open.a / libwhale_core.a missing — run:\n'
                      '    python3 -m whale_instructor.tools_openlibs')
         run([gcc] + ldf + objs + extra_libs + link_libs, 'link')
-    objcopy = gcc.replace('-gcc', '-objcopy')
+    objcopy = os.path.join(os.path.dirname(gcc), 'arm-none-eabi-objcopy')
+    if not os.path.isfile(objcopy):
+        objcopy = gcc.replace('-gcc', '-objcopy')
     run([objcopy, '-O', 'binary', '-S', elf, out_bin], 'objcopy')
 
     # PROVENANCE CHECK: every lib/crt in the map must live in THIS toolchain
