@@ -503,6 +503,60 @@ cmp.setFieldValue('LT', 'OP');
   check('hat next-chain kept', c.includes('move(move_forward, 40)'), c);
 }
 
+{ // empty hat mouth + stacked chain: the placeholder pass must not leak
+  // into main() (regression: def main() used to start with a stray pass)
+  const hat = make('wh_event_start');
+  const drive = make('wh_move_time', {DIR: 'move_forward', SPEED: 40,
+                                      SECS: 2});
+  hat.nextConnection.connect(drive.previousConnection);
+  const forever = make('wh_forever');
+  drive.nextConnection.connect(forever.previousConnection);
+  const motor = make('wh_set_motor', {PORT: 'A', SPEED: 50});
+  forever.getInput('DO').connection.connect(motor.previousConnection);
+  const c = blocksToPython(ws);
+  fresh();
+  check('hat empty mouth: no stray pass', !c.includes('pass'), c);
+  check('hat empty mouth: chain runs',
+    c.includes('move_time(move_forward, 40, 2)'), c);
+  check('hat empty mouth: forever body nested',
+    /move_time\(move_forward, 40, 2\)\n    while True:\n        set_motor\(A, 50\)/
+      .test(c), c);
+  check('hat empty mouth: no double emit',
+    (c.match(/while True:/g) || []).length === 1, c);
+}
+
+{ // hat with BOTH a filled mouth and a chain below: mouth first, then
+  // the chain, cleanly split across lines
+  const hat = make('wh_event_start', {}, {},
+    {DO: make('wh_move', {DIR: 'move_forward', SPEED: 40})});
+  const below = make('wh_move', {DIR: 'move_backward', SPEED: 30});
+  hat.nextConnection.connect(below.previousConnection);
+  const c = blocksToPython(ws);
+  fresh();
+  const i1 = c.indexOf('move(move_forward, 40)');
+  const i2 = c.indexOf('move(move_backward, 30)');
+  check('hat mouth+chain: both present, mouth first',
+    i1 >= 0 && i2 > i1, c);
+  check('hat mouth+chain: line break kept',
+    /move\(move_forward, 40\)\n\s*move\(/.test(c), c);
+}
+
+{ // a chain stacked under a touch hat joins the event body -- it used
+  // to be dropped silently
+  const hat = make('wh_event_touch', {PORT: 'P2'});
+  const below = make('wh_move', {DIR: 'move_forward', SPEED: 20});
+  hat.nextConnection.connect(below.previousConnection);
+  const c = blocksToPython(ws);
+  fresh();
+  check('touch hat chain: inside event body',
+    /if touch_switch_pressed\(P2\):\n            move\(move_forward, 20\)/
+      .test(c), c);
+  // main() legitimately holds a pass (the canvas has nothing else);
+  // only the task body must be free of it
+  check('touch hat chain: task body clean',
+    !/if touch_switch_pressed[\s\S]*?pass/.test(c), c);
+}
+
 { // a long stack nested INSIDE the hat is the normal way to build a
   // program — every block must land in the generated main()
   const mk = (t, f) => make(t, f);

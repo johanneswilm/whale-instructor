@@ -1441,22 +1441,31 @@ function blocksToPython(workspace) {
   const loose = tops.filter((b) => b.type !== 'wh_event_start' &&
                                   b.type !== 'wh_event_touch');
 
+  /* A hat's body is both the blocks in its mouth AND the blocks stacked
+   * below it (the natural Scratch-style move) -- either way they run.
+   * An empty mouth must not leak its placeholder pass into main()/task
+   * bodies when the chain provides the statements. The chain is emitted
+   * via genBlock() once: blockToCode already follows the next-connection
+   * chain (scrub_), so walking it again would double-emit every block
+   * after the first. */
+  function hatBody(hat) {
+    let mouth = bodyFlat(hat, 'DO').replace(/\n+$/, '');
+    if (mouth.trim() === 'pass') mouth = '';
+    const first = hat.getNextBlock();
+    const chain = first ? genBlock(first) : '';
+    return mouth ? mouth + '\n' + chain : chain;
+  }
+
   let mainCode = '';
   for (const b of loose) mainCode += genBlock(b);
-  for (const b of startHats) {
-    mainCode += bodyFlat(b, 'DO');
-    /* the hat has a next-notch, and blocks stacked below it (the
-     * natural Scratch-style move) would otherwise be silently dropped */
-    for (let n = b.getNextBlock(); n; n = n.getNextBlock()) {
-      mainCode += genBlock(n);
-    }
-  }
+  for (const b of startHats) mainCode += hatBody(b);
 
   let taskCode = '';
   let taskIdx = 1;
   for (const b of touchHats) {
     const port = fld(b, 'PORT');
-    const inner = bodyFlat(b, 'DO');
+    let inner = hatBody(b);
+    if (!inner.trim()) inner = pyGen.INDENT + 'pass\n';
     taskCode += 'def task' + (taskIdx > 1 ? taskIdx : '') + '():\n' +
       pyGen.INDENT + 'while True:\n' +
       pyGen.INDENT.repeat(2) + 'if ' + api('touch_switch_pressed') +
