@@ -2,7 +2,9 @@
 
 Whale Instructor is an open-source management suite for WhalesBot MC101s
 robot controllers (sold as E7 Pro / AI S1). It is Linux-first, stdlib-only
-Python (no third-party Python deps), with a vanilla-JS web IDE. Keep it
+Python (no third-party Python deps on Linux; the one deliberate exception
+is the optional `hid` extra that the USB uploader pulls in on
+Windows/macOS — see whale_cli.py), with a vanilla-JS web IDE. Keep it
 that way unless asked otherwise.
 
 ## Ground rules (do not violate)

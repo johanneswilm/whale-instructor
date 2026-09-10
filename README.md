@@ -15,7 +15,8 @@ It is a Linux-first programming suite for the WhalesBot MC101s controller
 (sold as WhalesBot E7 Pro / AI S1): a visual Blocks editor that grows with
 you into real Python and real C, a Python-to-C transpiler, a build
 pipeline for any modern arm-none-eabi toolchain, a USB uploader, a live
-debug panel, and a searchable reference of the device API.
+debug panel, and a searchable reference of the device API. It runs on
+Linux, macOS and Windows (see *Platforms* below).
 
 All project-authored code is GPL-3.0-or-later; the small runtime your
 program is built against is LGPL-3.0-or-later. **Programs you write with
@@ -65,14 +66,31 @@ svenska, dansk, suomi, français, italiano, português, Nederlands, polski,
 the title bar; Arabic and Hebrew mirror the whole UI right-to-left,
 including the block workspace).
 
-## Linux first (macOS / Windows planned)
+## Platforms
 
-This project is developed on Linux and works on Linux today. macOS and
-Windows support is planned but not implemented yet (the HID uploader
-currently uses `/dev/hidraw`; the toolchain finder searches PATH and can be
-pointed at any `arm-none-eabi-gcc` via `WHALE_INSTRUCTOR_TOOLCHAIN` or
-`--gcc=`). Everything is stdlib-only Python with argv-list subprocesses, so
-nothing is Linux-specific by design.
+**Linux** is the primary platform: everything — IDE, builds, USB
+uploader, Bluetooth live run — is developed and device-validated there.
+The USB uploader talks to the controller directly through `/dev/hidraw`
+(no dependencies, stdlib only).
+
+**macOS and Windows** are supported as well:
+
+- `pipx install whale-instructor` works there and pulls in the `hid`
+  package (hidapi bindings — prebuilt wheels, no compiler) for the USB
+  uploader; the Linux install stays stdlib-only.
+- `whale-fetch-toolchain fetch` resolves a prebuilt arm-none-eabi-gcc
+  for all three platforms (or install it via your system package
+  manager / Homebrew).
+- Ready-made desktop bundles (self-contained Tauri app with the
+  PyInstaller backend, Bluetooth included) are attached to every GitHub
+  release: `.dmg` for Apple silicon and Intel Macs, `.msi`/`.exe` for
+  Windows, plus the Linux formats.
+
+One honest caveat: the macOS/Windows USB transport is implemented and
+CI-built but has not yet been validated against a real controller —
+Linux remains the hardware-validated reference path. If you have the
+robot and one of those machines, `whale-cli.py probe` is the one-liner
+that would confirm it (see TODO.md).
 
 ## What you need
 
@@ -91,10 +109,10 @@ python3 -m whale_instructor.tools_openlibs
 ### The cross-compiler (free software, fetched automatically)
 
 Building images needs `arm-none-eabi-gcc`. It's GPL-licensed free
-software, so the fetch tool can install it for you — it resolves the
-latest xPack prebuilt release for your platform, unpacks it into
-`~/.local/share/whale-instructor/toolchains/` (the per-user data dir) and
-builds auto-discover it there:
+software, so the fetch tool can install it for you — on Linux, macOS and
+Windows alike it resolves the latest xPack prebuilt release for your
+platform, unpacks it into `~/.local/share/whale-instructor/toolchains/`
+(the per-user data dir) and builds auto-discover it there:
 
 ```
 whale-fetch-toolchain fetch
@@ -196,11 +214,12 @@ python3 -m venv /tmp/bundle-venv
 /tmp/bundle-venv/bin/python tools_build_bundle.py --onedir   # faster start
 ```
 
-Output lands in `artifacts/bundle/` (`whale-instructor` binary, or
-`Whale Instructor.app` on macOS). The bundle starts the IDE server and
-opens the browser like `whale-ide` does; the **Quit** button in the IDE
-shuts it down. Build/upload jobs re-dispatch through the bundle
-executable, so everything works without a system Python.
+Output lands in `artifacts/bundle/` (`whale-instructor` binary on Linux,
+`Whale Instructor.app` on macOS, `whale-instructor.exe` on Windows). The
+bundle starts the IDE server and opens the browser like `whale-ide` does;
+the **Quit** button in the IDE shuts it down. Build/upload jobs
+re-dispatch through the bundle executable, so everything works without a
+system Python.
 
 ## Desktop app (Tauri)
 

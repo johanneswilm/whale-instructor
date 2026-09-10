@@ -48,8 +48,11 @@ validation record and the hardware-found fixes). What remains:
 
 10. Upload hardening: optional retry wrapper around uploads; diff one of
     our uploads against a wire capture.
-11. Cross-platform: hidapi-based uploader for macOS/Windows; CI matrix
-    for both test suites + compile-only builds.
+11. Cross-platform: the hidapi-based USB uploader for macOS/Windows is
+    implemented (conditional `hid` dependency, wired into the desktop
+    sidecars) and CI-built on all three OSes — but not yet validated
+    against a real controller (`whale-cli.py probe` on a Mac/Windows
+    machine with the robot on USB is the one-line validator).
 
 ## Publishing
 
