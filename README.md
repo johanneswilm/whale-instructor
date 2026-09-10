@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="whale_instructor/static/favicon.svg" alt="Whale Instructor logo" width="120">
+<img src="https://raw.githubusercontent.com/johanneswilm/whale-instructor/main/whale_instructor/static/favicon.svg" alt="Whale Instructor logo" width="120">
 
 # Whale Instructor
 
@@ -65,6 +65,41 @@ svenska, dansk, suomi, français, italiano, português, Nederlands, polski,
 русский, 中文（简体）, 日本語, 한국어, Türkçe, العربية and עברית (switch in
 the title bar; Arabic and Hebrew mirror the whole UI right-to-left,
 including the block workspace).
+
+## Screenshots
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/johanneswilm/whale-instructor/main/media/ide-blocks.png"
+       alt="Blocks editor with a small drive program" width="820">
+</p>
+<p align="center">
+  <em>Blocks for beginners — the same program as readable Python and
+  editable C as the user grows.</em>
+</p>
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/johanneswilm/whale-instructor/main/media/ide-python.png"
+       alt="Python tab" width="49%">
+  <img src="https://raw.githubusercontent.com/johanneswilm/whale-instructor/main/media/ide-c.png"
+       alt="C tab" width="49%">
+</p>
+<p align="center">
+  <em>Left: the Python dialect a Blocks program generates (shown: the
+  rover demo). Right: the same program as generated C — editable and
+  buildable directly.</em>
+</p>
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/johanneswilm/whale-instructor/main/media/ide-debug.png"
+       alt="Debug panel" width="49%">
+  <img src="https://raw.githubusercontent.com/johanneswilm/whale-instructor/main/media/ide-help.png"
+       alt="Help tab" width="49%">
+</p>
+<p align="center">
+  <em>Left: the live Debug panel (motors, sensor reads). Right: the
+  searchable device-API reference — click a function to insert its
+  call.</em>
+</p>
 
 ## Platforms
 
