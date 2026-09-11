@@ -47,9 +47,11 @@ validation — see TODO.md.
 ## Device facts the core encodes
 
 All values below were taken from the controller hardware and verified
-on it; they are functional wiring facts, not vendor code.
+on it; they are functional wiring facts, not vendor code. Silicon-level
+identities (actual MCU, motor-driver ICs, power limits) are in
+HARDWARE.md.
 
-### Board wiring (STM32F103VE, "MC101s" controller)
+### Board wiring (STM32F103VE-class apps, "MC101s" controller; actual silicon AT32F403A — see HARDWARE.md)
 
 - Smart-sensor I2C groups (bit-banged, `tI2cResource[4]`):
   group 0 SDA PB8 / SCL PB9, group 1 SDA PD6 / SCL PD7,
